@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO -->
+  <title>Free GraphPad Prism Alternative | Online Statistical Analysis Tool</title>
+  <meta name="description" content="Free online statistical analysis tool. Create bar graphs, box plots, violin plots, scatter plots and run t-tests, ANOVA — no installation, no subscription. The best free GraphPad Prism alternative." />
+  <meta name="keywords" content="graphpad prism alternative free, free statistical analysis online, t-test online free, anova test online, bar graph statistics online, box plot generator, prism alternative" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Free GraphPad Prism Alternative | Statistics Tool" />
+  <meta property="og:description" content="Create publication-quality graphs and run statistical tests online for free. No installation needed." />
+  <meta property="og:url" content="https://statistics.thinkflo.net" />
+  <meta property="og:type" content="website" />
+
+  <!-- Google AdSense (추후 코드 삽입 위치) -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a202c; background: #fff; }
+
+    /* NAV */
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; background: #fff; z-index: 100; }
+    .logo { font-size: 1.25rem; font-weight: 700; color: #667eea; text-decoration: none; }
+    .nav-cta { background: #667eea; color: #fff; padding: 0.5rem 1.25rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: background 0.2s; }
+    .nav-cta:hover { background: #5a67d8; }
+
+    /* HERO */
+    .hero { text-align: center; padding: 5rem 2rem 3rem; background: linear-gradient(135deg, #f0f4ff 0%, #fff 60%); }
+    .hero-badge { display: inline-block; background: #ebf4ff; color: #667eea; font-size: 0.8rem; font-weight: 600; padding: 0.3rem 0.8rem; border-radius: 20px; margin-bottom: 1.5rem; letter-spacing: 0.05em; }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.2; margin-bottom: 1.25rem; color: #1a202c; }
+    .hero h1 span { color: #667eea; }
+    .hero p { font-size: 1.15rem; color: #4a5568; max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.7; }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: #667eea; color: #fff; padding: 0.9rem 2rem; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: transform 0.2s, background 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
+    .btn-primary:hover { background: #5a67d8; transform: translateY(-2px); }
+    .btn-secondary { background: #fff; color: #667eea; padding: 0.9rem 2rem; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 1.05rem; border: 2px solid #667eea; transition: transform 0.2s; }
+    .btn-secondary:hover { transform: translateY(-2px); }
+    .hero-note { font-size: 0.85rem; color: #718096; margin-top: 1rem; }
+
+    /* AD SLOT */
+    .ad-slot { max-width: 900px; margin: 2rem auto; padding: 0 2rem; text-align: center; }
+    .ad-placeholder { background: #f7fafc; border: 1px dashed #cbd5e0; border-radius: 8px; padding: 1.5rem; color: #a0aec0; font-size: 0.85rem; }
+
+    /* FEATURES */
+    .section { padding: 4rem 2rem; max-width: 1100px; margin: 0 auto; }
+    .section-title { text-align: center; font-size: 1.9rem; font-weight: 800; margin-bottom: 0.75rem; }
+    .section-sub { text-align: center; color: #718096; margin-bottom: 3rem; font-size: 1.05rem; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .feature-card { background: #f8fafc; border-radius: 12px; padding: 1.75rem; border: 1px solid #e2e8f0; }
+    .feature-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .feature-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .feature-card p { color: #718096; line-height: 1.6; font-size: 0.95rem; }
+
+    /* COMPARISON */
+    .compare-section { background: #f8fafc; padding: 4rem 2rem; }
+    .compare-inner { max-width: 800px; margin: 0 auto; }
+    .compare-table { width: 100%; border-collapse: collapse; margin-top: 2rem; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .compare-table th { padding: 1rem 1.25rem; text-align: center; background: #667eea; color: #fff; font-weight: 700; }
+    .compare-table th:first-child { text-align: left; }
+    .compare-table td { padding: 0.9rem 1.25rem; border-bottom: 1px solid #e2e8f0; font-size: 0.95rem; text-align: center; }
+    .compare-table td:first-child { text-align: left; font-weight: 500; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .yes { color: #38a169; font-weight: 700; }
+    .no { color: #e53e3e; font-weight: 700; }
+    .highlight-col { background: #f0f4ff; }
+
+    /* HOW TO */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+    .step { text-align: center; padding: 1.5rem; }
+    .step-num { width: 48px; height: 48px; background: #667eea; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; margin: 0 auto 1rem; }
+    .step h3 { font-weight: 700; margin-bottom: 0.5rem; }
+    .step p { color: #718096; font-size: 0.9rem; line-height: 1.6; }
+
+    /* FAQ */
+    .faq-list { max-width: 750px; margin: 2rem auto 0; }
+    .faq-item { border-bottom: 1px solid #e2e8f0; padding: 1.25rem 0; }
+    .faq-item h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: #2d3748; }
+    .faq-item p { color: #718096; line-height: 1.65; font-size: 0.95rem; }
+
+    /* CTA BOTTOM */
+    .cta-section { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; text-align: center; padding: 4rem 2rem; }
+    .cta-section h2 { font-size: 2rem; font-weight: 800; margin-bottom: 1rem; }
+    .cta-section p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 2rem; }
+    .btn-white { background: #fff; color: #667eea; padding: 0.9rem 2rem; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 1.05rem; display: inline-block; transition: transform 0.2s; }
+    .btn-white:hover { transform: translateY(-2px); }
+
+    /* FOOTER */
+    footer { text-align: center; padding: 2rem; color: #a0aec0; font-size: 0.85rem; border-top: 1px solid #e2e8f0; }
+    footer a { color: #667eea; text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 3rem 1.5rem 2rem; }
+      .hero-btns { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="logo" href="/">📊 Statistics Tool</a>
+    <a class="nav-cta" href="https://prism-like.onrender.com" target="_blank">Launch Free Tool →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">✨ 100% FREE — No Account Required</div>
+    <h1>The Free Alternative to<br/><span>GraphPad Prism</span></h1>
+    <p>Create publication-quality graphs and run statistical tests online. No installation, no subscription, no credit card — just open your browser and start analyzing.</p>
+    <div class="hero-btns">
+      <a class="btn-primary" href="https://prism-like.onrender.com" target="_blank">🚀 Launch Free Tool</a>
+      <a class="btn-secondary" href="#how-to">See How It Works</a>
+    </div>
+    <p class="hero-note">✅ Free forever &nbsp;|&nbsp; ✅ No sign-up &nbsp;|&nbsp; ✅ Works in browser</p>
+  </section>
+
+  <!-- AD SLOT TOP -->
+  <div class="ad-slot">
+    <!-- Google AdSense 광고 (승인 후 아래 코드로 교체) -->
+    <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXX" data-ad-slot="XXXXXXXX" data-ad-format="auto"></ins> -->
+    <div class="ad-placeholder">Advertisement</div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="section">
+    <h2 class="section-title">Everything You Need for Data Analysis</h2>
+    <p class="section-sub">All the essential features of Prism — completely free</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>7 Graph Types</h3>
+        <p>Bar graph, box plot, violin plot, scatter plot, line plot, histogram, and heatmap — all with individual data points overlay.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔬</div>
+        <h3>Statistical Tests</h3>
+        <p>t-test, one-way ANOVA, non-parametric tests (Mann-Whitney, Kruskal-Wallis) with automatic result interpretation.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📁</div>
+        <h3>Easy Data Import</h3>
+        <p>Upload CSV or Excel files. Compare multiple groups from a single file or across separate files.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3>Publication-Ready</h3>
+        <p>Clean, professional graphs ready for papers and presentations. Customize colors, labels, and styles.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>No Installation</h3>
+        <p>Works entirely in your browser. No software to install, no account to create. Start analyzing in seconds.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Privacy First</h3>
+        <p>Your data stays in your browser session. Nothing is stored on our servers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="compare-section">
+    <div class="compare-inner">
+      <h2 class="section-title">How We Compare</h2>
+      <p class="section-sub">Get the essential features without the expensive subscription</p>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="highlight-col">Statistics Tool<br/>(This site)</th>
+            <th>GraphPad Prism</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Price</td><td class="highlight-col yes">Free</td><td class="no">$300–$600+/year</td></tr>
+          <tr><td>Installation required</td><td class="highlight-col yes">No</td><td class="no">Yes</td></tr>
+          <tr><td>Bar / Box / Violin plots</td><td class="highlight-col yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>t-test & ANOVA</td><td class="highlight-col yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Non-parametric tests</td><td class="highlight-col yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Individual data points</td><td class="highlight-col yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>CSV / Excel import</td><td class="highlight-col yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Account required</td><td class="highlight-col yes">No</td><td class="no">Yes</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- AD SLOT MIDDLE -->
+  <div class="ad-slot">
+    <div class="ad-placeholder">Advertisement</div>
+  </div>
+
+  <!-- HOW TO -->
+  <section class="section" id="how-to">
+    <h2 class="section-title">Get Started in 3 Steps</h2>
+    <p class="section-sub">No learning curve. Just upload and analyze.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Upload Your Data</h3>
+        <p>Upload a CSV or Excel file, or paste your data directly into the tool.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Choose Graph & Test</h3>
+        <p>Select your graph type and statistical test from the sidebar. Configure groups and labels.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Download Results</h3>
+        <p>Get publication-ready graphs and statistical results instantly. Download as PNG or PDF.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <h3>Is this tool really free?</h3>
+        <p>Yes, 100% free. No hidden fees, no subscription, no credit card required. The tool is supported by advertising.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Is my data safe?</h3>
+        <p>Your data is processed in your browser session and is never stored on our servers. When you close the tab, everything is gone.</p>
+      </div>
+      <div class="faq-item">
+        <h3>What file formats are supported?</h3>
+        <p>CSV (.csv) and Excel (.xlsx) files are supported. You can also compare data from multiple files at once.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Which statistical tests are available?</h3>
+        <p>Student's t-test, Welch's t-test, one-way ANOVA with post-hoc tests, Mann-Whitney U test, and Kruskal-Wallis test.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can I use this for my research paper?</h3>
+        <p>Absolutely. The graphs are designed to be publication-quality and are suitable for academic papers and presentations.</p>
+      </div>
+      <div class="faq-item">
+        <h3>How is this different from GraphPad Prism?</h3>
+        <p>This tool covers the most commonly used features of Prism — graphs and basic statistical tests — completely free. GraphPad Prism has more advanced features but costs $300–$600+ per year.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BOTTOM -->
+  <section class="cta-section">
+    <h2>Ready to Analyze Your Data?</h2>
+    <p>Free, instant, no sign-up required.</p>
+    <a class="btn-white" href="https://prism-like.onrender.com" target="_blank">🚀 Launch Free Tool Now</a>
+  </section>
+
+  <!-- AD SLOT BOTTOM -->
+  <div class="ad-slot">
+    <div class="ad-placeholder">Advertisement</div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2024 statistics.thinkflo.net · Part of <a href="https://thinkflo.net">ThinkFlo</a></p>
+    <p style="margin-top:0.5rem;">Free online statistical analysis tool — GraphPad Prism alternative</p>
+  </footer>
+
+</body>
+</html>
