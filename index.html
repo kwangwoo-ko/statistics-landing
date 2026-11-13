@@ -91,6 +91,15 @@
     /* FOOTER */
     footer { text-align: center; padding: 2rem; color: #a0aec0; font-size: 0.85rem; border-top: 1px solid #e2e8f0; }
     footer a { color: #667eea; text-decoration: none; }
+    .footer-links { margin-bottom: 0.5rem; }
+    .footer-links a { margin: 0 0.5rem; }
+
+    /* COOKIE BANNER */
+    .cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; background: #1a202c; color: #e2e8f0; padding: 1rem 1.5rem; display: none; justify-content: center; align-items: center; gap: 1.25rem; flex-wrap: wrap; z-index: 200; font-size: 0.9rem; }
+    .cookie-banner.show { display: flex; }
+    .cookie-banner a { color: #a5b4fc; text-decoration: underline; }
+    .cookie-accept { background: #667eea; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+    .cookie-accept:hover { background: #5a67d8; }
 
     @media (max-width: 600px) {
       .hero { padding: 3rem 1.5rem 2rem; }
@@ -219,7 +228,7 @@
   </section>
 
   <!-- FAQ -->
-  <section class="section">
+  <section class="section" id="faq">
     <h2 class="section-title">Frequently Asked Questions</h2>
     <div class="faq-list">
       <div class="faq-item">
@@ -263,9 +272,31 @@
 
   <!-- FOOTER -->
   <footer>
-    <p>© 2024 statistics.thinkflo.net · Part of <a href="https://thinkflo.net">ThinkFlo</a></p>
+    <div class="footer-links">
+      <a href="/">Home</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a> · <a href="privacy-policy.html">Privacy Policy</a>
+    </div>
+    <p>© 2026 statistics.thinkflo.net · Part of <a href="https://thinkflo.net">ThinkFlo</a></p>
     <p style="margin-top:0.5rem;">Free online statistical analysis tool — GraphPad Prism alternative</p>
   </footer>
+
+  <!-- COOKIE BANNER -->
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie consent">
+    <span>We use cookies to serve relevant ads and improve your experience. <a href="privacy-policy.html">Learn more</a></span>
+    <button class="cookie-accept" id="cookieAccept">Accept</button>
+  </div>
+
+  <script>
+    (function () {
+      var banner = document.getElementById('cookieBanner');
+      try {
+        if (!localStorage.getItem('cookieConsent')) { banner.classList.add('show'); }
+      } catch (e) { banner.classList.add('show'); }
+      document.getElementById('cookieAccept').addEventListener('click', function () {
+        try { localStorage.setItem('cookieConsent', 'accepted'); } catch (e) {}
+        banner.classList.remove('show');
+      });
+    })();
+  </script>
 
 </body>
 </html>
