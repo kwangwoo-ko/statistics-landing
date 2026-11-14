@@ -1,5 +1,6 @@
 /* GraphZen statistics engine — all computation runs client-side. No data leaves the browser.
-   p-values are computed via tanh-sinh quadrature of the beta density, validated against scipy. */
+   p-values are computed via tanh-sinh quadrature of the beta density and regularized
+   incomplete gamma functions, validated against scipy. */
 (function (global) {
   'use strict';
 
@@ -83,6 +84,163 @@
     return log_p > -700 ? Math.exp(log_p) : 0;
   }
 
+  /* regularized upper incomplete gamma Q(a,x) — series + continued fraction */
+  function gammaSeries(a, x) {
+    var ap = a, sum = 1 / a, del = sum;
+    for (var n = 1; n <= 1000; n++) {
+      ap += 1;
+      del *= x / ap;
+      sum += del;
+      if (Math.abs(del) < Math.abs(sum) * 1e-15) break;
+    }
+    return sum * Math.exp(-x + a * Math.log(x) - logGamma(a));
+  }
+
+  function gammaCF(a, x) {
+    var FPMIN = 1e-300;
+    var b = x + 1 - a, c = 1 / FPMIN, d = 1 / b, h = d;
+    for (var i = 1; i <= 1000; i++) {
+      var an = -i * (i - a);
+      b += 2;
+      d = an * d + b;
+      if (Math.abs(d) < FPMIN) d = FPMIN;
+      c = b + an / c;
+      if (Math.abs(c) < FPMIN) c = FPMIN;
+      d = 1 / d;
+      var del = d * c;
+      h *= del;
+      if (Math.abs(del - 1) < 1e-15) break;
+    }
+    return Math.exp(-x + a * Math.log(x) - logGamma(a)) * h;
+  }
+
+  function gammaUpper(a, x) {
+    if (x <= 0) return 1;
+    if (x < a + 1) return 1 - gammaSeries(a, x);
+    return gammaCF(a, x);
+  }
+
+  function chi2Upper(x, k) {
+    return gammaUpper(k / 2, x / 2);
+  }
+
+  function rankDataAverage(vals) {
+    var order = [];
+    for (var i = 0; i < vals.length; i++) order.push(i);
+    order.sort(function (x, y) { return vals[x] - vals[y]; });
+    var ranks = new Array(vals.length);
+    var i = 0;
+    while (i < vals.length) {
+      var j = i;
+      while (j + 1 < vals.length && vals[order[j + 1]] === vals[order[i]]) j++;
+      var avg = (i + j) / 2 + 1;
+      for (var k = i; k <= j; k++) ranks[order[k]] = avg;
+      i = j + 1;
+    }
+    return ranks;
+  }
+
+  function mannWhitneyU(a, b) {
+    var n1 = a.length, n2 = b.length, N = n1 + n2;
+    var allv = a.concat(b);
+    var ranks = rankDataAverage(allv);
+    var R1 = 0;
+    for (var i = 0; i < n1; i++) R1 += ranks[i];
+    var U1 = R1 - n1 * (n1 + 1) / 2;
+    var mu = n1 * n2 / 2;
+    var counts = {};
+    for (var v of allv) counts[v] = (counts[v] || 0) + 1;
+    var T = 0;
+    for (var key in counts) {
+      var c = counts[key];
+      if (c > 1) T += c * c * c - c;
+    }
+    var hasTies = T > 0;
+    var p;
+    /* Mirror scipy's 'auto': exact only for small samples without ties;
+       with ties (or larger samples) use the tie-corrected normal approximation. */
+    if (Math.max(n1, n2) <= 8 && !hasTies) {
+      var total = 0, countLe = 0, countGe = 0;
+      var chosen = [];
+      (function enumerate(start) {
+        if (chosen.length === n1) {
+          var r1 = 0;
+          for (var w = 0; w < chosen.length; w++) r1 += ranks[chosen[w]];
+          var u1 = r1 - n1 * (n1 + 1) / 2;
+          total++;
+          if (u1 <= U1) countLe++;
+          if (u1 >= U1) countGe++;
+          return;
+        }
+        for (var s = start; s < N; s++) {
+          chosen.push(s);
+          enumerate(s + 1);
+          chosen.pop();
+        }
+      })(0);
+      p = Math.min(1, 2 * Math.min(countLe / total, countGe / total));
+    } else {
+      var sig = Math.sqrt(n1 * n2 / 12 * ((N + 1) - T / (N * (N - 1))));
+      if (sig === 0) p = 1;
+      else {
+        var z = (U1 - mu + (U1 < mu ? 0.5 : -0.5)) / sig;
+        p = chi2Upper(z * z, 1);
+      }
+    }
+    var U2 = n1 * n2 - U1;
+    return {
+      test: 'Mann-Whitney U test',
+      statistic: Math.min(U1, U2), statLabel: 'U',
+      z: (U1 - mu) / (hasTies || N > 16 ? Math.sqrt(n1 * n2 / 12 * (1 - T / (N * N - N))) || 1 : 1),
+      p: p, n1: n1, n2: n2, exact: Math.max(n1, n2) <= 8
+    };
+  }
+
+  function kruskalWallis(groups) {
+    var allv = [];
+    for (var g = 0; g < groups.length; g++) allv = allv.concat(groups[g]);
+    var N = allv.length;
+    var ranks = rankDataAverage(allv);
+    var idx = 0, H = 0;
+    for (var j = 0; j < groups.length; j++) {
+      var rSum = 0;
+      for (var r = 0; r < groups[j].length; r++) rSum += ranks[idx + r];
+      idx += groups[j].length;
+      H += (rSum * rSum) / groups[j].length;
+    }
+    H = 12 / (N * (N + 1)) * H - 3 * (N + 1);
+    var counts = {};
+    for (var v of allv) counts[v] = (counts[v] || 0) + 1;
+    var T = 0;
+    for (var key in counts) {
+      var c = counts[key];
+      if (c > 1) T += c * c * c - c;
+    }
+    H = H / (1 - T / (N * N * N - N));
+    var k = groups.length;
+    var p = chi2Upper(H, k - 1);
+    return {
+      test: 'Kruskal-Wallis test',
+      statistic: H, statLabel: 'H', df: k - 1, p: p, N: N, groupsCount: k
+    };
+  }
+
+  function pearson(x, y) {
+    var n = Math.min(x.length, y.length);
+    var sx = 0, sy = 0;
+    for (var i = 0; i < n; i++) { sx += x[i]; sy += y[i]; }
+    var mx = sx / n, my = sy / n;
+    var num = 0, dx = 0, dy = 0;
+    for (var j = 0; j < n; j++) {
+      var vx = x[j] - mx, vy = y[j] - my;
+      num += vx * vy;
+      dx += vx * vx;
+      dy += vy * vy;
+    }
+    var den = Math.sqrt(dx * dy);
+    return den === 0 ? 0 : num / den;
+  }
+
   function mean(a) {
     var s = 0;
     for (var i = 0; i < a.length; i++) s += a[i];
@@ -95,7 +253,6 @@
     return s / (a.length - 1);
   }
 
-  /* Linear-interpolation quantile (matches numpy/scipy default). */
   function quantile(a, p) {
     if (!a.length) return NaN;
     var s = a.slice().sort(function (x, y) { return x - y; });
@@ -162,12 +319,16 @@
   var GraphZenStats = {
     logGamma: logGamma,
     betaincQuad: betaincQuad,
+    chi2Upper: chi2Upper,
+    pearson: pearson,
     mean: mean,
     sampleVar: sampleVar,
     quantile: quantile,
     median: median,
     tTestIndependent: tTestIndependent,
-    anovaOneWay: anovaOneWay
+    anovaOneWay: anovaOneWay,
+    mannWhitneyU: mannWhitneyU,
+    kruskalWallis: kruskalWallis
   };
 
   if (typeof module !== 'undefined' && module.exports) {

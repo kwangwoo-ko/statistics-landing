@@ -18,6 +18,7 @@
 
   <script src="vendor/papaparse.min.js"></script>
   <script src="vendor/plotly.min.js"></script>
+  <script src="vendor/xlsx.full.min.js"></script>
   <script src="stats.js"></script>
 
   <style>
@@ -166,12 +167,14 @@
         <div class="section-header"><span class="num">1</span> Upload Your Data</div>
         <div class="drop" id="dropZone">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M15 2v5h5"/><path d="M12 17v-6"/><path d="m9 14 3-3 3 3"/></svg>
-          <p><strong>Drop a CSV file here</strong> or click to browse</p>
+          <p><strong>Drop CSV or Excel files here</strong> or click to browse</p>
           <p class="hint">First row is treated as column headers — no file handy? <a id="loadSample" href="#">Try the sample data</a></p>
-          <input type="file" id="fileInput" accept=".csv" style="display:none" />
+          <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" multiple style="display:none" />
         </div>
         <div class="file-status" id="fileStatus"></div>
-        <div style="margin-top: .7rem;"></div>
+        <div style="margin-top: .5rem; display: none;" id="clearRow">
+          <a href="#" id="clearFiles" style="font-size:.78rem; color:#B91C1C; text-decoration:underline; text-underline-offset:3px;">Clear loaded files</a>
+        </div>
         <div class="error-box" id="fileError"></div>
       </div>
 
@@ -182,9 +185,13 @@
           <option value="bar">Bar Graph (Mean ± SD)</option>
           <option value="box">Box Plot</option>
           <option value="violin">Violin Plot</option>
+          <option value="scatter">Scatter Plot (two groups)</option>
+          <option value="line">Line Plot</option>
+          <option value="histogram">Histogram</option>
+          <option value="heatmap">Correlation Heatmap</option>
         </select>
-        <label class="ctl">Select Numeric Columns to Compare <span style="color:#9CA3AF;font-weight:400;">(choose 2 or more)</span></label>
-        <div id="columnsBox"><p class="hint">Upload a CSV file first — numeric columns will appear here.</p></div>
+        <label class="ctl" id="columnsLabel">Select Numeric Columns to Compare <span style="color:#9CA3AF;font-weight:400;">(choose 2 or more)</span></label>
+        <div id="columnsBox"><p class="hint">Upload a file first — numeric columns will appear here.</p></div>
         <label class="ctl">Show Individual Data Points</label>
         <div class="checkbox-row"><input type="checkbox" id="showPoints" checked /><span>Overlay individual data points on the graph</span></div>
       </div>
@@ -205,10 +212,12 @@
           <option value="none">No statistical test</option>
           <option value="student">Student's t-test (2 groups, equal variance)</option>
           <option value="welch">Welch's t-test (2 groups, unequal variance)</option>
+          <option value="mannwhitney">Mann-Whitney U test (2 groups, non-parametric)</option>
           <option value="anova">One-way ANOVA (3+ groups)</option>
+          <option value="kruskal">Kruskal-Wallis test (3+ groups, non-parametric)</option>
         </select>
         <div class="warn" id="testWarn"></div>
-        <div class="hint">Runs automatically when you generate the visualization. p-values are computed in your browser and verified against reference implementations.</div>
+        <div class="hint">Parametric tests (t-test, ANOVA) compare means — use them for roughly normal data. Non-parametric tests (Mann-Whitney U, Kruskal-Wallis) compare distributions via ranks — use them when data is skewed or has outliers, as often revealed by box or violin plots.</div>
       </div>
     </div>
 
