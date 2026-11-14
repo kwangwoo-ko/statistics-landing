@@ -178,20 +178,53 @@
     var groups = getSelectedGroups();
     var type = el('graphType').value;
     var test = el('testType').value;
+    updateScatterAxes();
     el('generateBtn').disabled = groups.length < 2;
     var warn = el('testWarn');
     warn.style.display = 'none';
     if (groups.length < 2) {
       warn.style.display = 'block';
       warn.textContent = 'Select at least 2 numeric columns (or files) to compare.';
-    } else if (type === 'scatter' && groups.length !== 2) {
-      warn.style.display = 'block';
-      warn.textContent = 'Scatter plots compare exactly two groups (X vs Y). Select exactly 2.';
+    } else if (type === 'scatter') {
+      if (groups.length !== 2) {
+        warn.style.display = 'block';
+        warn.textContent = 'Scatter plots compare exactly two groups (X vs Y). Select exactly 2.';
+      } else if (el('scatterX').value === el('scatterY').value) {
+        warn.style.display = 'block';
+        warn.textContent = 'Choose different X and Y groups for the scatter plot.';
+      }
     } else if ((test === 'student' || test === 'welch' || test === 'mannwhitney') && groups.length !== 2) {
       var target = test === 'mannwhitney' ? 'Kruskal-Wallis' : 'one-way ANOVA';
       warn.style.display = 'block';
       warn.textContent = (test === 'mannwhitney' ? 'Mann-Whitney U compares exactly 2 groups' : 't-tests compare exactly 2 groups') +
         '. With ' + groups.length + ' groups selected, ' + target + ' will be used instead.';
+    }
+  }
+
+  function updateScatterAxes() {
+    var type = el('graphType').value;
+    var container = el('scatterAxes');
+    container.style.display = type === 'scatter' ? 'block' : 'none';
+    if (type !== 'scatter') return;
+    var groups = getSelectedGroups();
+    var xSel = el('scatterX'), ySel = el('scatterY');
+    var prevX = xSel.value, prevY = ySel.value;
+    xSel.innerHTML = '';
+    ySel.innerHTML = '';
+    groups.forEach(function (g) {
+      var o1 = document.createElement('option');
+      o1.value = g.name;
+      o1.textContent = g.name;
+      xSel.appendChild(o1);
+      var o2 = document.createElement('option');
+      o2.value = g.name;
+      o2.textContent = g.name;
+      ySel.appendChild(o2);
+    });
+    if (groups.length) {
+      var names = groups.map(function (g) { return g.name; });
+      xSel.value = names.indexOf(prevX) >= 0 ? prevX : names[0];
+      ySel.value = (names.indexOf(prevY) >= 0 && prevY !== xSel.value) ? prevY : (names.length > 1 ? names[1] : names[0]);
     }
   }
 
@@ -226,6 +259,14 @@
       el('genError').textContent = 'Scatter plots compare exactly two groups (X vs Y). Select exactly 2.';
       return;
     }
+    if (graphType === 'scatter') {
+      var sxName = el('scatterX').value, syName = el('scatterY').value;
+      if (!sxName || !syName || sxName === syName) {
+        el('genError').style.display = 'block';
+        el('genError').textContent = 'Choose different X and Y groups for the scatter plot.';
+        return;
+      }
+    }
 
     var test = el('testType').value;
     var note = '';
@@ -249,7 +290,27 @@
     resultsBody.innerHTML = '';
     var showCard = false;
 
-    if (test !== 'none') {
+    if (graphType === 'scatter') {
+      var rxName = el('scatterX').value, ryName = el('scatterY').value;
+      var gx = groups.find(function (g) { return g.name === rxName; });
+      var gy = groups.find(function (g) { return g.name === ryName; });
+      var nn = Math.min(gx.values.length, gy.values.length);
+      var reg = S.linearRegression(gx.values.slice(0, nn), gy.values.slice(0, nn));
+      if (!reg) {
+        el('genError').style.display = 'block';
+        el('genError').textContent = 'The X values have no variation — a regression line cannot be fitted.';
+      } else {
+        var sigR = reg.p < 0.05;
+        var interpretationR =
+          'A linear regression of "' + ryName + '" on "' + rxName + '" (n = ' + reg.n + ') gave the equation y = ' + fmtNum(reg.intercept) + ' + ' + fmtNum(reg.slope) + '·x. ' +
+          'The slope was ' + (sigR ? '' : 'not ') + 'significantly different from zero, ' + fmtP(reg.p) + '. ' +
+          'R² = ' + reg.r2.toFixed(3) + ', meaning ' + (reg.r2 * 100).toFixed(1) + '% of the variance in "' + ryName + '" is explained by "' + rxName + '".' +
+          (sigR ? '' : ' The relationship is weak or absent in this sample.');
+        renderRegressionResults(reg, sigR, note);
+        resultsBody.appendChild(buildInterpretation(interpretationR));
+        showCard = true;
+      }
+    } else if (test !== 'none') {
       if (test === 'mannwhitney') {
         var resMw = S.mannWhitneyU(groups[0].values, groups[1].values);
         var sigMw = resMw.p < 0.05;
@@ -373,15 +434,32 @@
         });
       });
     } else if (type === 'scatter') {
-      var n = Math.min(groups[0].values.length, groups[1].values.length);
+      var sxName = el('scatterX').value, syName = el('scatterY').value;
+      var xg = groups.find(function (g) { return g.name === sxName; }) || groups[0];
+      var yg = groups.find(function (g) { return g.name === syName; }) || groups[1] || groups[0];
+      var n = Math.min(xg.values.length, yg.values.length);
+      var xv = xg.values.slice(0, n), yv = yg.values.slice(0, n);
       traces.push({
         type: 'scatter', mode: 'markers',
-        x: groups[0].values.slice(0, n), y: groups[1].values.slice(0, n),
-        name: groups[0].name + ' vs ' + groups[1].name,
+        x: xv, y: yv,
+        name: xg.name + ' vs ' + yg.name,
         marker: { color: '#4F6BED', size: 8, opacity: 0.7 }
       });
-      layoutExtra.xaxisTitle = groups[0].name;
-      layoutExtra.yaxisTitle = groups[1].name;
+      var reg = S.linearRegression(xv, yv);
+      if (reg) {
+        var minX = Math.min.apply(null, xv), maxX = Math.max.apply(null, xv);
+        traces.push({
+          type: 'scatter', mode: 'lines',
+          x: [minX, maxX],
+          y: [reg.intercept + reg.slope * minX, reg.intercept + reg.slope * maxX],
+          name: 'Linear fit (R² = ' + reg.r2.toFixed(3) + ')',
+          line: { color: '#0A1128', width: 2.5, dash: 'dash' },
+          hoverinfo: 'skip'
+        });
+        layoutExtra.showLegend = true;
+      }
+      layoutExtra.xaxisTitle = xg.name;
+      layoutExtra.yaxisTitle = yg.name;
     } else if (type === 'line') {
       groups.forEach(function (g, i) {
         traces.push({
@@ -522,8 +600,35 @@
     body.appendChild(groupSummaryTable(groups, false));
   }
 
-  function renderMwuResults(res, groups, sig, note) {
+  function renderRegressionResults(reg, sig, note) {
     var body = el('resultsBody');
+    body.innerHTML = '';
+    var n = noteBlock(note); if (n) body.appendChild(n);
+    body.appendChild(sigBadge(sig, sig ? 'Slope is significantly different from zero' : 'Slope is not significantly different from zero'));
+    var eq = 'y = ' + fmtNum(reg.intercept) + (reg.slope < 0 ? ' − ' : ' + ') + fmtNum(Math.abs(reg.slope)) + '·x';
+    var rows = [
+      ['Regression equation', eq],
+      ['Slope ± SE', fmtNum(reg.slope) + ' ± ' + fmtNum(reg.seSlope)],
+      ['Slope 95% CI', fmtNum(reg.ciSlopeLow) + ' to ' + fmtNum(reg.ciSlopeHigh)],
+      ['Y-intercept ± SE', fmtNum(reg.intercept) + ' ± ' + fmtNum(reg.seIntercept)],
+      ['R² (coefficient of determination)', reg.r2.toFixed(4)],
+      ['Pearson r', reg.r.toFixed(4)],
+      ['P value (slope ≠ 0)', fmtP(reg.p)],
+      ['n', String(reg.n)],
+      ['Sy.x (residual standard deviation)', fmtNum(reg.syx)]
+    ];
+    var table = document.createElement('table');
+    table.className = 'res-table';
+    table.innerHTML = '<thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody>' +
+      rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') + '</tbody>';
+    body.appendChild(table);
+    var note2 = document.createElement('p');
+    note2.style.cssText = 'font-size:.78rem;color:#9CA3AF;margin-top:.6rem;';
+    note2.textContent = 'Linear model: y = intercept + slope·x. R² is the proportion of variance in Y explained by X. The P value tests whether the slope differs from zero.';
+    body.appendChild(note2);
+  }
+
+  function renderMwuResults(res, groups, sig, note) {    var body = el('resultsBody');
     body.innerHTML = '';
     var n = noteBlock(note); if (n) body.appendChild(n);
     body.appendChild(sigBadge(sig, sig ? 'Statistically significant difference found between distributions' : 'No statistically significant difference found between distributions'));
@@ -617,6 +722,8 @@
   el('columnsBox').addEventListener('change', updateGenerateState);
   el('testType').addEventListener('change', updateGenerateState);
   el('graphType').addEventListener('change', updateGenerateState);
+  el('scatterX').addEventListener('change', updateGenerateState);
+  el('scatterY').addEventListener('change', updateGenerateState);
   el('generateBtn').addEventListener('click', generate);
   el('dlPng').addEventListener('click', function () { downloadImage('png'); });
   el('dlSvg').addEventListener('click', function () { downloadImage('svg'); });

@@ -29,8 +29,10 @@
           else if (c.type === 'kruskal') res = GraphZenStats.kruskalWallis(c.groups);
           else if (c.type === 'chi2') { res = { p: GraphZenStats.chi2Upper(c.x, c.k) }; ref = c.ref; }
           else if (c.type.indexOf('mwu') === 0) res = GraphZenStats.mannWhitneyU(c.a, c.b);
+          else if (c.type === 'linreg') res = { p: GraphZenStats.linearRegression(c.x, c.y).p, _slope: GraphZenStats.linearRegression(c.x, c.y).slope, _r: GraphZenStats.linearRegression(c.x, c.y).r };
           else res = GraphZenStats.tTestIndependent(c.a, c.b, c.type === 'welch');
           var err = Math.abs(ref - res.p) / Math.max(ref, 1e-300);
+          if (c.type === 'linreg') { var e2 = Math.abs(res._slope - c.slope) / Math.max(Math.abs(c.slope), 1e-300); err = Math.max(err, e2); }
           var failed = err > 1e-6 && ref < 0.99;
           if (failed) fails++;
           if (err > maxRel) { maxRel = err; worst = { i: i, type: c.type, ref: ref, mine: res.p, err: err }; }

@@ -190,6 +190,13 @@
           <option value="histogram">Histogram</option>
           <option value="heatmap">Correlation Heatmap</option>
         </select>
+        <div id="scatterAxes" style="display:none;">
+          <label class="ctl">X-axis (independent variable)</label>
+          <select id="scatterX"></select>
+          <label class="ctl">Y-axis (dependent variable)</label>
+          <select id="scatterY"></select>
+          <div class="hint">A linear regression is fitted and reported with the plot.</div>
+        </div>
         <label class="ctl" id="columnsLabel">Select Numeric Columns to Compare <span style="color:#9CA3AF;font-weight:400;">(choose 2 or more)</span></label>
         <div id="columnsBox"><p class="hint">Upload a file first — numeric columns will appear here.</p></div>
         <label class="ctl">Show Individual Data Points</label>

@@ -264,6 +264,62 @@
 
   function median(a) { return quantile(a, 0.5); }
 
+  function tDistTwoSided(t, df) {
+    return betaincQuad(df / 2, 0.5, df / (df + t * t));
+  }
+
+  /* t quantile: find t >= 0 such that two-sided p(t, df) = pTwoSided (bisection). */
+  function tQuantile(pTwoSided, df) {
+    if (pTwoSided >= 1) return 0;
+    var lo = 0, hi = 1;
+    var guard = 0;
+    while (tDistTwoSided(hi, df) > pTwoSided && guard++ < 60) hi *= 2;
+    for (var i = 0; i < 200; i++) {
+      var mid = (lo + hi) / 2;
+      if (tDistTwoSided(mid, df) > pTwoSided) lo = mid; else hi = mid;
+    }
+    return (lo + hi) / 2;
+  }
+
+  /* Ordinary least squares linear regression y = intercept + slope*x.
+     Reports the standard values used in scientific publications. */
+  function linearRegression(x, y) {
+    var n = Math.min(x.length, y.length);
+    if (n < 2) return null;
+    var sx = 0, sy = 0;
+    for (var i = 0; i < n; i++) { sx += x[i]; sy += y[i]; }
+    var mx = sx / n, my = sy / n;
+    var sxx = 0, sxy = 0, syy = 0;
+    for (var j = 0; j < n; j++) {
+      var dx = x[j] - mx, dy = y[j] - my;
+      sxx += dx * dx;
+      sxy += dx * dy;
+      syy += dy * dy;
+    }
+    if (sxx === 0) return null;
+    var slope = sxy / sxx;
+    var intercept = my - slope * mx;
+    var r = (sxx > 0 && syy > 0) ? sxy / Math.sqrt(sxx * syy) : 0;
+    var r2 = r * r;
+    var sse = Math.max(syy - slope * sxy, 0);
+    var df = n - 2;
+    var syx = Math.sqrt(sse / df);
+    var seSlope = syx / Math.sqrt(sxx);
+    var seIntercept = syx * Math.sqrt(1 / n + (mx * mx) / sxx);
+    var t, p;
+    if (seSlope === 0) { t = Infinity; p = 0; }
+    else { t = slope / seSlope; p = tDistTwoSided(Math.abs(t), df); }
+    var tCrit = tQuantile(0.05, df);
+    return {
+      n: n, slope: slope, intercept: intercept,
+      r: r, r2: r2, syx: syx,
+      seSlope: seSlope, seIntercept: seIntercept,
+      ciSlopeLow: slope - tCrit * seSlope,
+      ciSlopeHigh: slope + tCrit * seSlope,
+      t: t, df: df, p: p
+    };
+  }
+
   function tTestIndependent(a, b, welch) {
     var n1 = a.length, n2 = b.length;
     var m1 = mean(a), m2 = mean(b);
@@ -328,7 +384,9 @@
     tTestIndependent: tTestIndependent,
     anovaOneWay: anovaOneWay,
     mannWhitneyU: mannWhitneyU,
-    kruskalWallis: kruskalWallis
+    kruskalWallis: kruskalWallis,
+    linearRegression: linearRegression,
+    tQuantile: tQuantile
   };
 
   if (typeof module !== 'undefined' && module.exports) {
