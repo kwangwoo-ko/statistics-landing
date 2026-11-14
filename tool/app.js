@@ -407,6 +407,7 @@
   });
   el('loadSample').addEventListener('click', function (e) {
     e.preventDefault();
+    e.stopPropagation();
     parseCSVText(SAMPLE_CSV, 'sample_data.csv');
   });
   el('columnsBox').addEventListener('change', updateGenerateState);
