@@ -314,6 +314,7 @@
     var resultsBody = el('resultsBody');
     resultsBody.innerHTML = '';
     var showCard = false;
+    var learnAdded = false;
 
     if (graphType === 'scatter') {
       var rxName = el('scatterX').value, ryName = el('scatterY').value;
@@ -333,6 +334,11 @@
           (sigR ? '' : ' The relationship is weak or absent in this sample.');
         renderRegressionResults(reg, sigR, note);
         resultsBody.appendChild(buildInterpretation(interpretationR));
+        appendLearnLinks(resultsBody, [
+          { href: '/learn/regression-r2.html', text: 'Linear regression & R²' },
+          { href: '/learn/p-value.html', text: 'What is a p-value?' }
+        ]);
+        learnAdded = true;
         showCard = true;
       }
     } else if (test !== 'none') {
@@ -351,6 +357,11 @@
           (resMw.exact ? '' : ' (Normal approximation with tie correction.)');
         renderMwuResults(resMw, groups, sigMw, note);
         resultsBody.appendChild(buildInterpretation(interpretationMw));
+        appendLearnLinks(resultsBody, [
+          { href: '/learn/parametric-vs-nonparametric.html', text: 'Parametric vs non-parametric' },
+          { href: '/learn/box-vs-violin.html', text: 'Reading box plots' }
+        ]);
+        learnAdded = true;
         showCard = true;
       } else if (test === 'kruskal') {
         var resKw = S.kruskalWallis(groups.map(function (g) { return g.values; }));
@@ -364,6 +375,11 @@
           (sigKw ? ' Post-hoc pairwise comparisons are recommended to identify which groups differ.' : '');
         renderKruskalResults(resKw, groups, sigKw, note);
         resultsBody.appendChild(buildInterpretation(interpretationKw));
+        appendLearnLinks(resultsBody, [
+          { href: '/learn/parametric-vs-nonparametric.html', text: 'Parametric vs non-parametric' },
+          { href: '/learn/which-test.html', text: 'Which test to use' }
+        ]);
+        learnAdded = true;
         showCard = true;
       } else if (test === 'anova') {
         var resA = S.anovaOneWay(groups.map(function (g) { return g.values; }));
@@ -379,6 +395,11 @@
             : 'The observed differences between group means could reflect sampling variability.');
         renderAnovaResults(resA, groups, sigA, note);
         resultsBody.appendChild(buildInterpretation(interpretationA));
+        appendLearnLinks(resultsBody, [
+          { href: '/learn/which-test.html', text: 'Post-hoc & which test' },
+          { href: '/learn/p-value.html', text: 'P-values' }
+        ]);
+        learnAdded = true;
         showCard = true;
       } else {
         var resT = S.tTestIndependent(groups[0].values, groups[1].values, test === 'welch');
@@ -396,12 +417,23 @@
             : 'The observed difference could reflect sampling variability.');
         renderTTestResults(resT, groups, sigT, note);
         resultsBody.appendChild(buildInterpretation(interpretationT));
+        appendLearnLinks(resultsBody, [
+          { href: '/learn/p-value.html', text: 'What is a p-value?' },
+          { href: '/learn/sd-sem-ci.html', text: 'SD vs SEM vs CI' }
+        ]);
+        learnAdded = true;
         showCard = true;
       }
     }
 
     if (showDist) {
       renderDistSummary(groups, resultsBody);
+      if (!learnAdded) {
+        appendLearnLinks(resultsBody, [
+          { href: '/learn/box-vs-violin.html', text: 'Reading box & violin plots' },
+          { href: '/learn/parametric-vs-nonparametric.html', text: 'Parametric vs non-parametric' }
+        ]);
+      }
       showCard = true;
     }
 
@@ -589,6 +621,22 @@
     n.style.cssText = 'font-size:.8rem;color:#B45309;background:#FEF3C7;border-radius:8px;padding:.5rem .7rem;';
     n.textContent = note;
     return n;
+  }
+
+  function appendLearnLinks(container, links) {
+    var row = document.createElement('div');
+    row.className = 'learn-row';
+    var label = document.createElement('span');
+    label.className = 'lr-label';
+    label.textContent = 'Learn more';
+    row.appendChild(label);
+    links.forEach(function (l) {
+      var a = document.createElement('a');
+      a.href = l.href;
+      a.textContent = l.text;
+      row.appendChild(a);
+    });
+    container.appendChild(row);
   }
 
   function sigBadge(sig, text) {
