@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your First t-test in 5 Minutes — Step-by-Step Tutorial | GraphZen</title>
+  <meta name="description" content="A hands-on tutorial: run a Welch's t-test on sample data in your browser, then read every number the tool reports — statistic, degrees of freedom, p-value and interpretation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="/">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="12" width="4" height="8" rx="1" fill="#0A1128"/><rect x="10" y="7" width="4" height="13" rx="1" fill="#D4AF37"/><rect x="16" y="4" width="4" height="16" rx="1" fill="#0A1128"/></svg>
+      Statistics Tool
+    </a>
+    <div class="nav-links">
+      <a class="utility" href="/#faq">FAQ</a>
+      <a class="utility" href="/privacy-policy.html">Privacy</a>
+      <a class="lrn" href="/learn/">Learn</a>
+      <a class="tool-link" href="/tool/">Launch Free Tool</a>
+    </div>
+  </nav>
+
+  <div class="hero-band">
+    <div class="hero-inner">
+      <span class="eyebrow">Tutorial · 5 minutes · No installation</span>
+      <h1>Your first t-test, start to finish</h1>
+      <p class="hero-sub">Follow along with built-in sample data: run a Welch's t-test and learn to read every number the tool reports.</p>
+    </div>
+  </div>
+
+  <div class="ad-slot">
+    <!-- Google AdSense 광고 (승인 후 아래 코드로 교체) -->
+    <div class="ad-placeholder">Advertisement</div>
+  </div>
+
+  <div class="wrap">
+    <article>
+      <span class="meta">Updated November 2026 · Beginner-friendly · Uses built-in sample data</span>
+
+      <p>This walkthrough uses the sample dataset that ships with the tool — two treatment groups plus a control, 20 values each, stored in a spreadsheet-style file. No download needed: the data loads with one click.</p>
+
+      <h2>Step 1 — Open the tool and load the sample</h2>
+      <p>Open <a href="/tool/">GraphZen</a>. In the "Upload Your Data" card, click <strong>"Try the sample data"</strong>. You will see three columns appear: <em>Control</em>, <em>Treatment_A</em> and <em>Treatment_B</em>, 20 values each.</p>
+
+      <h2>Step 2 — Select two groups</h2>
+      <p>In "Select Numeric Columns to Compare", keep <strong>Treatment_A</strong> and <strong>Control</strong> checked and uncheck <strong>Treatment_B</strong>. We are comparing exactly two independent groups, which is what a t-test needs.</p>
+
+      <h2>Step 3 — Choose the graph</h2>
+      <p>Set <strong>Graph Type</strong> to <em>Box Plot</em>. A box plot shows each group's median and spread — a quick sanity check before testing. You will notice Treatment_A's box sits visibly higher than Control's.</p>
+
+      <h2>Step 4 — Pick the test</h2>
+      <p>In "Statistical Test", choose <strong>Welch's t-test</strong>. It compares the two group means without assuming equal variances — the safe default for real-world data. (Student's t-test is the alternative when spreads are similar.)</p>
+
+      <h2>Step 5 — Generate and read the results</h2>
+      <p>Press <strong>Generate Visualization</strong>. On the sample data you should see, approximately:</p>
+      <table class="data-table">
+        <thead><tr><th>Output</th><th>Expected value</th><th>What it means</th></tr></thead>
+        <tbody>
+          <tr><td>t statistic</td><td>≈ 7.17</td><td>How many standard errors apart the two means are.</td></tr>
+          <tr><td>Degrees of freedom</td><td>≈ 34.7</td><td>A Welch-specific quantity — it can be fractional.</td></tr>
+          <tr><td>p-value</td><td>&lt; 0.0001</td><td>The difference would be extremely unlikely if there were no real effect.</td></tr>
+          <tr><td>Group table</td><td>A: M ≈ 26.8, SD ≈ 1.36 <br>Control: M ≈ 24.1, SD ≈ 0.99</td><td>The effect itself — about 2.7 units higher on average.</td></tr>
+        </tbody>
+      </table>
+      <p>The interpretation box below the table translates all of this into a sentence: the difference is statistically significant, and Treatment_A's mean is higher. If you switch the error-bar setting on a bar graph, the summary table follows your choice (SD, SEM or 95% CI). See <a href="sd-sem-ci.html">SD vs SEM vs 95% CI</a> if that choice is unfamiliar.</p>
+
+      <div class="callout">
+        <p><strong>Reading the p-value correctly:</strong> p &lt; 0.0001 does not mean "99.99% certain". It means data this far apart would be very rare if the groups were truly identical. The full story — including what p-values do not say — is in <a href="p-value.html">What is a p-value, really?</a></p>
+      </div>
+
+      <h2>Step 6 — Export your figure</h2>
+      <p>Under the graph, use <strong>Download PNG</strong> (high-resolution raster) or <strong>Download SVG</strong> (vector, scales perfectly in Word/LaTeX). Select "Show individual data points" first if you want the raw values visible — with 20 values per group, reviewers will appreciate it.</p>
+
+      <h2>Common hiccups</h2>
+      <ul>
+        <li><strong>Only one group is selected.</strong> The Generate button stays disabled until at least two columns are checked.</li>
+        <li><strong>Your own file does not appear correctly.</strong> Make sure the first row contains column headers and values are numeric — the tool detects numeric columns automatically.</li>
+        <li><strong>The wrong test was applied.</strong> With three or more groups selected, t-tests automatically become ANOVA. The results card tells you when this happens.</li>
+      </ul>
+
+      <h2>Next steps</h2>
+      <ul>
+        <li>Try the same comparison with <a href="which-test.html">the test picker</a> — it will walk you through the choice for your own data.</li>
+        <li>Add Treatment_B back and switch to ANOVA — see <a href="tutorial-anova.html">Reading an ANOVA result</a> for a guided version.</li>
+        <li>If your data is skewed, switch to <a href="parametric-vs-nonparametric.html">Mann-Whitney U</a> instead.</li>
+      </ul>
+
+      <div class="callout-gold">
+        <p><strong>Everything you just did ran in your browser.</strong> No upload, no account, no server copy of your data.</p>
+      </div>
+    </article>
+
+    <div class="related">
+      <p class="label">Related guides</p>
+      <a href="tutorial-anova.html">Reading an ANOVA result, step by step</a>
+      <a href="which-test.html">Which statistical test should I use?</a>
+      <a href="p-value.html">What is a p-value, really?</a>
+      <a href="sd-sem-ci.html">SD vs SEM vs 95% CI — which error bar?</a>
+    </div>
+
+    <div class="tool-cta">
+      <h2>Do the tutorial on your own screen.</h2>
+      <p>The sample data is one click away — start the walkthrough now.</p>
+      <a class="btn-gold" href="/tool/">Open GraphZen
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="/">Home</a> · <a href="/tool/">Tool</a> · <a href="/learn/">Learn</a> · <a href="/about.html">About</a> · <a href="/contact.html">Contact</a> · <a href="/terms.html">Terms</a> · <a href="/privacy-policy.html">Privacy Policy</a>
+    </div>
+    <p>© 2026 statistics.thinkflo.net · Part of <a href="https://thinkflo.net">ThinkFlo</a></p>
+    <p style="margin-top:0.75rem; font-size:0.75rem; color:#B9BFC7;">GraphPad Prism is a trademark of GraphPad Software, Inc. This site is not affiliated with, endorsed by, or sponsored by GraphPad Software.</p>
+  </footer>
+
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie consent">
+    <span>We use cookies to serve relevant ads and improve your experience. <a href="/privacy-policy.html">Learn more</a></span>
+    <button class="cookie-accept" id="cookieAccept">Accept</button>
+  </div>
+  <script>
+    (function () {
+      var banner = document.getElementById('cookieBanner');
+      try { if (!localStorage.getItem('cookieConsent')) banner.classList.add('show'); } catch (e) { banner.classList.add('show'); }
+      document.getElementById('cookieAccept').addEventListener('click', function () {
+        try { localStorage.setItem('cookieConsent', 'accepted'); } catch (e) {}
+        banner.classList.remove('show');
+      });
+    })();
+  </script>
+
+</body>
+</html>

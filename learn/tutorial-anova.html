@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reading an ANOVA Result, Step by Step | GraphZen</title>
+  <meta name="description" content="A guided walkthrough of a one-way ANOVA on sample data: what F, the two degrees of freedom and the p-value mean, how to read the results table, and what to do when the test is significant." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="/">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="12" width="4" height="8" rx="1" fill="#0A1128"/><rect x="10" y="7" width="4" height="13" rx="1" fill="#D4AF37"/><rect x="16" y="4" width="4" height="16" rx="1" fill="#0A1128"/></svg>
+      Statistics Tool
+    </a>
+    <div class="nav-links">
+      <a class="utility" href="/#faq">FAQ</a>
+      <a class="utility" href="/privacy-policy.html">Privacy</a>
+      <a class="lrn" href="/learn/">Learn</a>
+      <a class="tool-link" href="/tool/">Launch Free Tool</a>
+    </div>
+  </nav>
+
+  <div class="hero-band">
+    <div class="hero-inner">
+      <span class="eyebrow">Tutorial · 5 minutes · Sample data included</span>
+      <h1>Reading an ANOVA result, step by step</h1>
+      <p class="hero-sub">Three groups, one F statistic, two degrees of freedom — and the sentence you can actually write in a paper.</p>
+    </div>
+  </div>
+
+  <div class="ad-slot">
+    <!-- Google AdSense 광고 (승인 후 아래 코드로 교체) -->
+    <div class="ad-placeholder">Advertisement</div>
+  </div>
+
+  <div class="wrap">
+    <article>
+      <span class="meta">Updated November 2026 · Beginner-friendly · Uses built-in sample data</span>
+
+      <p>ANOVA is what you use when a t-test is not enough — because you have <strong>three or more groups</strong>. This walkthrough runs one on the sample data and reads the output line by line.</p>
+
+      <h2>Step 1 — Load the sample data</h2>
+      <p>Open <a href="/tool/">GraphZen</a>, click <strong>"Try the sample data"</strong>, and keep <strong>all three columns</strong> checked: Control, Treatment_A, Treatment_B (20 values each).</p>
+
+      <h2>Step 2 — Choose the graph</h2>
+      <p>Set <strong>Graph Type</strong> to <em>Box Plot</em> with data points shown. You will see the pattern that motivates the test: Treatment_A's box sits clearly higher, while Control and Treatment_B overlap heavily.</p>
+
+      <h2>Step 3 — Run the test</h2>
+      <p>Select <strong>One-way ANOVA</strong> as the statistical test and press <strong>Generate Visualization</strong>. On the sample data you should see, approximately:</p>
+      <table class="data-table">
+        <thead><tr><th>Output</th><th>Expected value</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>F statistic</td><td>≈ 35.2</td><td>The ratio of between-group variation to within-group variation. Large F = group means sit far apart relative to the noise inside groups.</td></tr>
+          <tr><td>df (between)</td><td>2</td><td>Number of groups − 1 (3 groups → 2).</td></tr>
+          <tr><td>df (within)</td><td>57</td><td>Total observations − number of groups (60 − 3).</td></tr>
+          <tr><td>p-value</td><td>&lt; 0.0001</td><td>The group means would be very unlikely to differ this much by chance.</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Step 4 — What the result actually says</h2>
+      <p>The correct sentence is narrow: <em>"At least two of the group means differ significantly."</em> ANOVA does <strong>not</strong> tell you which ones. In our sample, the group means are Control ≈ 24.1, Treatment_A ≈ 26.8, Treatment_B ≈ 24.2 — the follow-up question is obviously "is it A versus the rest?"</p>
+      <p>To answer that you need <strong>post-hoc pairwise comparisons</strong> (Tukey HSD is the classic choice). GraphZen reports the overall ANOVA; for the pairwise step, compare the pairs you care about with an adjusted significance threshold (for three pairs, α = 0.05/3 ≈ 0.017 by Bonferroni as a simple default), or use dedicated software for full post-hoc tables. Running a plain Welch's t-test on Treatment_A vs Control gives p ≈ 2.4 × 10⁻⁸; Treatment_B vs Control gives p ≈ 0.79 — consistent with the box plot's story.</p>
+
+      <div class="callout">
+        <p><strong>Why not just run three t-tests?</strong> Because each test has a 5% false-positive risk, and three tests compound it to roughly 14%. ANOVA controls the overall error rate first; that is why "ANOVA, then post-hoc" is the standard sequence.</p>
+      </div>
+
+      <h2>Step 5 — Write it up</h2>
+      <p>A complete, honest sentence for this result:</p>
+      <div class="callout-gold">
+        <p><em>"A one-way ANOVA found a statistically significant difference between the three groups (F(2, 57) = 35.2, p &lt; 0.0001). Post-hoc comparisons indicated that Treatment_A differed from Control."</em></p>
+      </div>
+      <p>Notice what is included: the statistic, both degrees of freedom, the p-value, and a clear statement of what the follow-up found. That is the full pattern — the same one to follow with your own data.</p>
+
+      <h2>When the ANOVA is not significant</h2>
+      <p>If p &gt; your threshold, the honest conclusion is that the data does not provide evidence that any group means differ — not that all groups are identical. With small samples, absence of evidence is often just missing evidence; see <a href="glossary.html#power">statistical power</a>.</p>
+
+      <h2>If your data is skewed</h2>
+      <p>ANOVA assumes roughly symmetric distributions. If the box plots show strong skew or outliers, use the rank-based equivalent — <strong>Kruskal-Wallis</strong> — which GraphZen also runs in the same dropdown, and report medians rather than means. The reasoning is in <a href="parametric-vs-nonparametric.html">parametric vs non-parametric tests</a>.</p>
+    </article>
+
+    <div class="related">
+      <p class="label">Related guides</p>
+      <a href="tutorial-t-test.html">Your first t-test, start to finish</a>
+      <a href="which-test.html">Which statistical test should I use?</a>
+      <a href="parametric-vs-nonparametric.html">Parametric vs non-parametric tests</a>
+      <a href="p-value.html">What is a p-value, really?</a>
+    </div>
+
+    <div class="tool-cta">
+      <h2>Run the walkthrough yourself.</h2>
+      <p>Sample data, ANOVA and clear results — free, in your browser.</p>
+      <a class="btn-gold" href="/tool/">Open GraphZen
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="/">Home</a> · <a href="/tool/">Tool</a> · <a href="/learn/">Learn</a> · <a href="/about.html">About</a> · <a href="/contact.html">Contact</a> · <a href="/terms.html">Terms</a> · <a href="/privacy-policy.html">Privacy Policy</a>
+    </div>
+    <p>© 2026 statistics.thinkflo.net · Part of <a href="https://thinkflo.net">ThinkFlo</a></p>
+    <p style="margin-top:0.75rem; font-size:0.75rem; color:#B9BFC7;">GraphPad Prism is a trademark of GraphPad Software, Inc. This site is not affiliated with, endorsed by, or sponsored by GraphPad Software.</p>
+  </footer>
+
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie consent">
+    <span>We use cookies to serve relevant ads and improve your experience. <a href="/privacy-policy.html">Learn more</a></span>
+    <button class="cookie-accept" id="cookieAccept">Accept</button>
+  </div>
+  <script>
+    (function () {
+      var banner = document.getElementById('cookieBanner');
+      try { if (!localStorage.getItem('cookieConsent')) banner.classList.add('show'); } catch (e) { banner.classList.add('show'); }
+      document.getElementById('cookieAccept').addEventListener('click', function () {
+        try { localStorage.setItem('cookieConsent', 'accepted'); } catch (e) {}
+        banner.classList.remove('show');
+      });
+    })();
+  </script>
+
+</body>
+</html>
