@@ -18,6 +18,7 @@
 
   <script src="vendor/papaparse.min.js"></script>
   <script src="vendor/plotly.min.js"></script>
+  <script src="stats.js"></script>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -72,6 +73,10 @@
     .file-status { margin-top: .7rem; font-size: .82rem; color: #374151; display: none; }
     .btn-mini { background: #fff; color: #0A1128; border: 1.5px solid #0A1128; border-radius: 999px; padding: .4rem 1rem; font-weight: 600; font-size: .8rem; cursor: pointer; transition: all .2s; font-family: inherit; }
     .btn-mini:hover { background: #F4F5F7; border-color: #D4AF37; }
+    .sample-row { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; margin-top: .8rem; padding-top: .8rem; border-top: 1px solid #F3F4F6; }
+    .dl-label { font-size: .78rem; color: #6B7280; }
+    .dl-link { font-size: .78rem; color: #0A1128; background: #fff; border: 1px solid #D1D5DB; border-radius: 8px; padding: .35rem .8rem; text-decoration: none; transition: all .2s; }
+    .dl-link:hover { border-color: #D4AF37; background: #F4F5F7; }
 
     /* GENERATE */
     .btn-generate { width: 100%; padding: .95rem; background: #0A1128; color: #fff; border: none; border-radius: 999px; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: all .3s; font-family: inherit; box-shadow: 0 6px 18px rgba(10,17,40,.25); }
@@ -168,11 +173,11 @@
           <input type="file" id="fileInput" accept=".csv" style="display:none" />
         </div>
         <div class="file-status" id="fileStatus"></div>
-        <div style="margin-top: .7rem;">
+        <div class="sample-row">
           <button class="btn-mini" id="loadSample">Try with sample data</button>
-          <span style="margin-left: .5rem; font-size: .78rem; color: #6B7280;">or download test files:</span>
-          <a class="btn-mini" href="samples/sample_significant.csv" download style="text-decoration:none; margin-left: .4rem;">sample_significant.csv</a>
-          <a class="btn-mini" href="samples/sample_nosig.csv" download style="text-decoration:none; margin-left: .4rem;">sample_nosig.csv</a>
+          <span class="dl-label">Test files:</span>
+          <a class="dl-link" href="samples/sample_significant.csv" download>sample_significant.csv</a>
+          <a class="dl-link" href="samples/sample_nosig.csv" download>sample_nosig.csv</a>
         </div>
         <div class="error-box" id="fileError"></div>
       </div>
