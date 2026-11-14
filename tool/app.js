@@ -152,10 +152,13 @@
     el('chartCard').style.display = 'block';
     el('adMid').style.display = 'block';
 
+    var graphType = el('graphType').value;
+    var showDist = (graphType === 'box' || graphType === 'violin');
     var resultsBody = el('resultsBody');
-    if (test === 'none') {
-      el('resultsCard').style.display = 'none';
-    } else {
+    resultsBody.innerHTML = '';
+    var showCard = false;
+
+    if (test !== 'none') {
       var res, interpretation = '';
       if (test === 'anova' || groups.length > 2) {
         res = S.anovaOneWay(groups.map(function (g) { return g.values; }));
@@ -184,8 +187,15 @@
         renderTTestResults(res, groups, sig, note);
       }
       resultsBody.appendChild(buildInterpretation(interpretation));
-      el('resultsCard').style.display = 'block';
+      showCard = true;
     }
+
+    if (showDist) {
+      renderDistSummary(groups, resultsBody);
+      showCard = true;
+    }
+
+    el('resultsCard').style.display = showCard ? 'block' : 'none';
 
     el('chartCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -341,6 +351,31 @@
     div.appendChild(h);
     div.appendChild(document.createTextNode(text));
     return div;
+  }
+
+  function renderDistSummary(groups, container) {
+    var h = document.createElement('div');
+    h.className = 'section-header';
+    h.style.marginTop = '1.25rem';
+    h.textContent = 'Distribution Summary';
+    container.appendChild(h);
+
+    var rows = groups.map(function (g) {
+      var v = g.values.slice().sort(function (x, y) { return x - y; });
+      var med = S.median(v);
+      var q1 = S.quantile(v, 0.25), q3 = S.quantile(v, 0.75);
+      return '<tr><td>' + g.name + '</td><td>' + v.length + '</td><td>' + fmtNum(med) + '</td><td>' + fmtNum(q1) + ' – ' + fmtNum(q3) + '</td><td>' + fmtNum(v[0]) + '</td><td>' + fmtNum(v[v.length - 1]) + '</td></tr>';
+    }).join('');
+
+    var table = document.createElement('table');
+    table.className = 'res-table';
+    table.innerHTML = '<thead><tr><th>Group</th><th>n</th><th>Median</th><th>IQR (Q1 – Q3)</th><th>Min</th><th>Max</th></tr></thead><tbody>' + rows + '</tbody></table>';
+    container.appendChild(table);
+
+    var note = document.createElement('p');
+    note.style.cssText = 'font-size:.78rem;color:#9CA3AF;margin-top:.6rem;';
+    note.textContent = 'Median and IQR describe the middle of each distribution — unlike mean ± SD, they are not affected by outliers. The box and violin plots visualize exactly these values.';
+    container.appendChild(note);
   }
 
   /* ---------- export ---------- */

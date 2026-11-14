@@ -95,6 +95,18 @@
     return s / (a.length - 1);
   }
 
+  /* Linear-interpolation quantile (matches numpy/scipy default). */
+  function quantile(a, p) {
+    if (!a.length) return NaN;
+    var s = a.slice().sort(function (x, y) { return x - y; });
+    var pos = (s.length - 1) * p;
+    var lo = Math.floor(pos), hi = Math.ceil(pos);
+    if (lo === hi) return s[lo];
+    return s[lo] + (s[hi] - s[lo]) * (pos - lo);
+  }
+
+  function median(a) { return quantile(a, 0.5); }
+
   function tTestIndependent(a, b, welch) {
     var n1 = a.length, n2 = b.length;
     var m1 = mean(a), m2 = mean(b);
@@ -152,6 +164,8 @@
     betaincQuad: betaincQuad,
     mean: mean,
     sampleVar: sampleVar,
+    quantile: quantile,
+    median: median,
     tTestIndependent: tTestIndependent,
     anovaOneWay: anovaOneWay
   };
