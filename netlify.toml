@@ -1,0 +1,14 @@
+[[redirects]]
+  from = "/tool/privacy-policy.html"
+  to = "/privacy-policy.html"
+  status = 301
+
+[[redirects]]
+  from = "/tool/about.html"
+  to = "/about.html"
+  status = 301
+
+[[redirects]]
+  from = "/tool/contact.html"
+  to = "/contact.html"
+  status = 301
