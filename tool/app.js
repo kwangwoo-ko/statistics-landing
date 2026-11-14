@@ -384,9 +384,12 @@
         var resT = S.tTestIndependent(groups[0].values, groups[1].values, test === 'welch');
         var sigT = resT.p < 0.05;
         var dirT = resT.mean1 > resT.mean2 ? 'higher' : 'lower';
+        var edT = currentErrorDisplay();
+        var extra1 = edT.label ? ', ' + edT.short(groups[0].values) : '';
+        var extra2 = edT.label ? ', ' + edT.short(groups[1].values) : '';
         var interpretationT =
-          'A ' + resT.test + ' compared "' + groups[0].name + '" (n = ' + resT.n1 + ', M = ' + fmtNum(resT.mean1) + ', SD = ' + fmtNum(resT.sd1) + ') and "' +
-          groups[1].name + '" (n = ' + resT.n2 + ', M = ' + fmtNum(resT.mean2) + ', SD = ' + fmtNum(resT.sd2) + '). ' +
+          'A ' + resT.test + ' compared "' + groups[0].name + '" (n = ' + resT.n1 + ', M = ' + fmtNum(resT.mean1) + extra1 + ') and "' +
+          groups[1].name + '" (n = ' + resT.n2 + ', M = ' + fmtNum(resT.mean2) + extra2 + '). ' +
           'The difference between the group means was ' + (sigT ? '' : 'not ') + 'statistically significant, ' + fmtP(resT.p) + '. ' +
           (sigT
             ? 'The mean of "' + groups[0].name + '" was ' + dirT + ' than the mean of "' + groups[1].name + '" (difference = ' + fmtNum(Math.abs(resT.mean1 - resT.mean2)) + ').'
@@ -595,19 +598,61 @@
     return badge;
   }
 
+  function currentErrorDisplay() {
+    var mode = el('errorBars').value;
+    if (mode === 'none') return { label: null, format: function () { return ''; }, short: function () { return ''; } };
+    return {
+      label: mode === 'sem' ? 'SEM' : (mode === 'ci95' ? '95% CI' : 'SD'),
+      format: function (values) {
+        var n = values.length;
+        var sd = Math.sqrt(S.sampleVar(values));
+        var sem = sd / Math.sqrt(n);
+        if (mode === 'sem') return fmtNum(sem);
+        if (mode === 'ci95') {
+          var tcrit = n > 1 ? S.tQuantile(0.05, n - 1) : 0;
+          var hw = tcrit * sem;
+          var m = S.mean(values);
+          return fmtNum(m - hw) + ' – ' + fmtNum(m + hw);
+        }
+        return fmtNum(sd);
+      },
+      short: function (values) {
+        var n = values.length;
+        var sd = Math.sqrt(S.sampleVar(values));
+        var sem = sd / Math.sqrt(n);
+        if (mode === 'sem') return 'SEM = ' + fmtNum(sem);
+        if (mode === 'ci95') {
+          var tcrit = n > 1 ? S.tQuantile(0.05, n - 1) : 0;
+          var hw = tcrit * sem;
+          var m = S.mean(values);
+          return '95% CI = ' + fmtNum(m - hw) + ' – ' + fmtNum(m + hw);
+        }
+        return 'SD = ' + fmtNum(sd);
+      }
+    };
+  }
+
   function groupSummaryTable(groups, useMedian) {
+    var ed = useMedian ? null : currentErrorDisplay();
     var rows = groups.map(function (g) {
       var v = g.values.slice().sort(function (x, y) { return x - y; });
       var center = useMedian ? S.median(v) : S.mean(v);
-      var spread = useMedian
-        ? (fmtNum(S.quantile(v, 0.25)) + ' – ' + fmtNum(S.quantile(v, 0.75)))
-        : fmtNum(Math.sqrt(S.sampleVar(v)));
-      return '<tr><td>' + g.name + '</td><td>' + v.length + '</td><td>' + fmtNum(center) + '</td><td>' + spread + '</td></tr>';
+      var spread;
+      if (useMedian) {
+        spread = '<td>' + fmtNum(S.quantile(v, 0.25)) + ' – ' + fmtNum(S.quantile(v, 0.75)) + '</td>';
+      } else if (ed.label) {
+        spread = '<td>' + ed.format(g.values) + '</td>';
+      } else {
+        spread = '';
+      }
+      return '<tr><td>' + g.name + '</td><td>' + v.length + '</td><td>' + fmtNum(center) + '</td>' + spread + '</tr>';
     }).join('');
+    var spreadHeader = useMedian ? 'IQR' : (ed && ed.label ? ed.label : '');
     var table = document.createElement('table');
     table.className = 'res-table';
     table.style.marginTop = '1rem';
-    table.innerHTML = '<thead><tr><th>Group</th><th>n</th><th>' + (useMedian ? 'Median' : 'Mean') + '</th><th>' + (useMedian ? 'IQR' : 'SD') + '</th></tr></thead><tbody>' + rows + '</tbody></table>';
+    table.innerHTML = '<thead><tr><th>Group</th><th>n</th><th>' + (useMedian ? 'Median' : 'Mean') + '</th>' +
+      (spreadHeader ? '<th>' + spreadHeader + '</th>' : '') + '</tr></thead><tbody>' + rows + '</tbody></table>';
     return table;
   }
 
