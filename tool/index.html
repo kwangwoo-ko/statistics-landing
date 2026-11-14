@@ -191,6 +191,16 @@
           <option value="histogram">Histogram</option>
           <option value="heatmap">Correlation Heatmap</option>
         </select>
+        <div id="errorBarRow" style="display:none;">
+          <label class="ctl">Error Bars</label>
+          <select id="errorBars">
+            <option value="sd">Standard deviation (± SD)</option>
+            <option value="sem">Standard error of the mean (± SEM)</option>
+            <option value="ci95">95% confidence interval</option>
+            <option value="none">No error bars</option>
+          </select>
+          <div class="hint">SD describes the spread of your data; SEM describes the precision of the mean (SD/√n). Many journals prefer SEM or 95% CI on bar graphs.</div>
+        </div>
         <div id="scatterAxes" style="display:none;">
           <label class="ctl">X-axis (independent variable)</label>
           <select id="scatterX"></select>

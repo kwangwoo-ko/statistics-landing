@@ -228,6 +228,7 @@
     var type = el('graphType').value;
     var isScatter = type === 'scatter';
     el('scatterAxes').style.display = isScatter ? 'block' : 'none';
+    el('errorBarRow').style.display = type === 'bar' ? 'block' : 'none';
     el('columnsBox').classList.toggle('inactive', isScatter);
     el('columnsLabel').classList.toggle('inactive', isScatter);
     if (!isScatter) return;
@@ -413,13 +414,25 @@
     var layoutExtra = {};
 
     if (type === 'bar') {
+      var errMode = el('errorBars').value;
       var means = groups.map(function (g) { return S.mean(g.values); });
       var sds = groups.map(function (g) { return Math.sqrt(S.sampleVar(g.values)); });
+      var errs = groups.map(function (g, i) {
+        var n = g.values.length;
+        var sem = sds[i] / Math.sqrt(n);
+        if (errMode === 'sem') return sem;
+        if (errMode === 'ci95') {
+          var tcrit = n > 1 ? S.tQuantile(0.05, n - 1) : 0;
+          return tcrit * sem;
+        }
+        return sds[i];
+      });
+      var errLabel = errMode === 'ci95' ? '95% CI' : (errMode === 'sem' ? 'SEM' : 'SD');
       traces.push({
         type: 'bar', x: idx, y: means,
-        error_y: { type: 'data', array: sds, visible: true },
+        error_y: { type: 'data', array: errs, visible: errMode !== 'none' },
         marker: { color: groups.map(function (_, i) { return PALETTE[i % PALETTE.length]; }) },
-        name: 'Mean ± SD',
+        name: errMode === 'none' ? 'Mean' : 'Mean ± ' + errLabel,
         hovertemplate: '%{x}: mean %{y:.3f}<extra></extra>'
       });
       if (showPoints) {
@@ -748,6 +761,7 @@
   el('graphType').addEventListener('change', updateGenerateState);
   el('scatterX').addEventListener('change', updateGenerateState);
   el('scatterY').addEventListener('change', updateGenerateState);
+  el('errorBars').addEventListener('change', updateGenerateState);
   el('generateBtn').addEventListener('click', generate);
   el('dlPng').addEventListener('click', function () { downloadImage('png'); });
   el('dlSvg').addEventListener('click', function () { downloadImage('svg'); });
