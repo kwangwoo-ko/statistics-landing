@@ -370,7 +370,8 @@
     dz.classList.remove('drag');
     if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
   });
-  el('loadSample').addEventListener('click', function () {
+  el('loadSample').addEventListener('click', function (e) {
+    e.preventDefault();
     parseCSVText(SAMPLE_CSV, 'sample_data.csv');
   });
   el('columnsBox').addEventListener('change', updateGenerateState);
