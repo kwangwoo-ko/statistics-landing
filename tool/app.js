@@ -174,25 +174,48 @@
     return groups;
   }
 
+  function getAllGroups() {
+    var groups = [];
+    if (state.datasets.length === 1) {
+      state.datasets[0].columns.forEach(function (col) {
+        groups.push({ name: col.name, values: col.values.slice() });
+      });
+    } else if (state.datasets.length > 1) {
+      state.datasets.forEach(function (ds) {
+        var vals = [];
+        ds.columns.forEach(function (c) { vals = vals.concat(c.values); });
+        groups.push({ name: stripExt(ds.name), values: vals });
+      });
+    }
+    return groups;
+  }
+
   function updateGenerateState() {
     var groups = getSelectedGroups();
     var type = el('graphType').value;
     var test = el('testType').value;
     updateScatterAxes();
-    el('generateBtn').disabled = groups.length < 2;
     var warn = el('testWarn');
     warn.style.display = 'none';
-    if (groups.length < 2) {
-      warn.style.display = 'block';
-      warn.textContent = 'Select at least 2 numeric columns (or files) to compare.';
-    } else if (type === 'scatter') {
-      if (groups.length !== 2) {
+
+    if (type === 'scatter') {
+      var allG = getAllGroups();
+      var sx = el('scatterX').value, sy = el('scatterY').value;
+      el('generateBtn').disabled = allG.length < 2 || sx === sy;
+      if (allG.length < 2) {
         warn.style.display = 'block';
-        warn.textContent = 'Scatter plots compare exactly two groups (X vs Y). Select exactly 2.';
-      } else if (el('scatterX').value === el('scatterY').value) {
+        warn.textContent = 'Upload data with at least 2 numeric columns to draw a scatter plot.';
+      } else if (sx === sy) {
         warn.style.display = 'block';
         warn.textContent = 'Choose different X and Y groups for the scatter plot.';
       }
+      return;
+    }
+
+    el('generateBtn').disabled = groups.length < 2;
+    if (groups.length < 2) {
+      warn.style.display = 'block';
+      warn.textContent = 'Select at least 2 numeric columns (or files) to compare.';
     } else if ((test === 'student' || test === 'welch' || test === 'mannwhitney') && groups.length !== 2) {
       var target = test === 'mannwhitney' ? 'Kruskal-Wallis' : 'one-way ANOVA';
       warn.style.display = 'block';
@@ -203,10 +226,12 @@
 
   function updateScatterAxes() {
     var type = el('graphType').value;
-    var container = el('scatterAxes');
-    container.style.display = type === 'scatter' ? 'block' : 'none';
-    if (type !== 'scatter') return;
-    var groups = getSelectedGroups();
+    var isScatter = type === 'scatter';
+    el('scatterAxes').style.display = isScatter ? 'block' : 'none';
+    el('columnsBox').classList.toggle('inactive', isScatter);
+    el('columnsLabel').classList.toggle('inactive', isScatter);
+    if (!isScatter) return;
+    var groups = getAllGroups();
     var xSel = el('scatterX'), ySel = el('scatterY');
     var prevX = xSel.value, prevY = ySel.value;
     xSel.innerHTML = '';
@@ -245,27 +270,26 @@
   }
 
   function generate() {
-    var groups = getSelectedGroups();
     var graphType = el('graphType').value;
+    var groups = graphType === 'scatter' ? getAllGroups() : getSelectedGroups();
     el('genError').style.display = 'none';
 
-    if (groups.length < 2) {
-      el('genError').style.display = 'block';
-      el('genError').textContent = 'Select at least 2 numeric columns (or files) to compare.';
-      return;
-    }
-    if (graphType === 'scatter' && groups.length !== 2) {
-      el('genError').style.display = 'block';
-      el('genError').textContent = 'Scatter plots compare exactly two groups (X vs Y). Select exactly 2.';
-      return;
-    }
     if (graphType === 'scatter') {
       var sxName = el('scatterX').value, syName = el('scatterY').value;
+      if (groups.length < 2) {
+        el('genError').style.display = 'block';
+        el('genError').textContent = 'Upload data with at least 2 numeric columns to draw a scatter plot.';
+        return;
+      }
       if (!sxName || !syName || sxName === syName) {
         el('genError').style.display = 'block';
         el('genError').textContent = 'Choose different X and Y groups for the scatter plot.';
         return;
       }
+    } else if (groups.length < 2) {
+      el('genError').style.display = 'block';
+      el('genError').textContent = 'Select at least 2 numeric columns (or files) to compare.';
+      return;
     }
 
     var test = el('testType').value;
