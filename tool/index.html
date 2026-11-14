@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>GraphZen — Free Online Statistical Analysis Tool | Statistics Tool</title>
+  <meta name="description" content="Free online statistical analysis: create publication-quality bar graphs, box plots and violin plots, and run t-tests and one-way ANOVA right in your browser. No sign-up, no installation." />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="GraphZen — Free Online Statistical Analysis Tool" />
+  <meta property="og:description" content="Publication-quality graphs and t-tests, ANOVA — free, in your browser." />
+  <meta property="og:url" content="https://statistics.thinkflo.net/tool" />
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script src="vendor/papaparse.min.js"></script>
+  <script src="vendor/plotly.min.js"></script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #0A1128; background: #FAFAFA; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    .stApp-like .block { padding-top: 1rem; }
+
+    /* NAV */
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; border-bottom: 1px solid #F3F4F6; position: sticky; top: 0; background: rgba(255,255,255,.85); backdrop-filter: blur(12px); z-index: 100; }
+    .logo { display: flex; align-items: center; gap: .6rem; font-size: 1.15rem; font-weight: 700; color: #0A1128; text-decoration: none; letter-spacing: -0.02em; }
+    .nav-links a { color: #6B7280; text-decoration: none; font-size: .9rem; font-weight: 500; margin-left: 1.4rem; transition: color .2s; }
+    .nav-links a:hover { color: #0A1128; }
+
+    /* HERO MINI */
+    .hero-band { position: relative; width: 100vw; left: 50%; margin-left: -50vw; background: linear-gradient(135deg, #0A1128 0%, #152245 100%); padding: 1.8rem 2.5rem; overflow: hidden; margin-top: -0.25rem; }
+    .hero-band::before { content: ''; position: absolute; right: -70px; top: -80px; width: 340px; height: 340px; border-radius: 50%; background: radial-gradient(circle, rgba(212,175,45,0.26) 0%, rgba(212,175,45,0) 70%); pointer-events: none; }
+    .hero-band::after { content: ''; position: absolute; left: -90px; bottom: -110px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(79,107,237,0.2) 0%, rgba(79,107,237,0) 70%); pointer-events: none; }
+    .hero-inner { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; max-width: 1250px; margin: 0 auto; flex-wrap: wrap; }
+    .hero-title-row { display: flex; align-items: center; gap: 0.9rem; }
+    .hero-title { font-size: 1.8rem; font-weight: 800; color: #ffffff; letter-spacing: -0.03em; line-height: 1.1; }
+    .hero-tagline { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #D4AF37; margin-top: 0.3rem; }
+    .hero-chips { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.9rem; }
+    .hero-chip { display: inline-flex; align-items: center; gap: 0.45rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16); color: #E5E7EB; font-size: 0.78rem; font-weight: 500; padding: 0.3rem 0.8rem; border-radius: 999px; }
+    .hero-chip svg { color: #D4AF37; }
+
+    /* AD SLOT */
+    .ad-slot { max-width: 1250px; margin: 1.25rem auto; padding: 0 2rem; text-align: center; }
+    .ad-placeholder { background: #fff; border: 1px dashed #D1D5DB; border-radius: 1rem; padding: 1.25rem; color: #9CA3AF; font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; }
+
+    /* LAYOUT */
+    .wrap { max-width: 1250px; margin: 0 auto; padding: 1rem 2rem 3rem; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    @media (max-width: 800px) { .grid-2 { grid-template-columns: 1fr; } }
+    .card { background: #fff; border: 1px solid #ECEEF1; border-radius: 1.25rem; padding: 1.5rem; box-shadow: 0 1px 3px rgba(10,17,40,.04); }
+    .section-header { font-size: .95rem; font-weight: 700; color: #0A1128; margin-bottom: 1rem; padding: .4rem .8rem; background: #fff; border: 1px solid #ECEEF1; border-left: 3px solid #D4AF37; border-radius: 0 8px 8px 0; display: flex; align-items: center; gap: .5rem; }
+    .section-header .num { color: #B8962E; font-weight: 800; }
+
+    /* CONTROLS */
+    label.ctl { display: block; font-size: .78rem; font-weight: 600; color: #374151; margin: .9rem 0 .35rem; }
+    select, input[type="text"] { width: 100%; padding: .6rem .8rem; border: 1px solid #D1D5DB; border-radius: 8px; font-family: inherit; font-size: .9rem; color: #0A1128; background: #fff; transition: border .2s, box-shadow .2s; }
+    select:focus, input[type="text"]:focus { outline: none; border-color: #4F6BED; box-shadow: 0 0 0 3px rgba(79,107,237,.12); }
+    .checkbox-row { display: flex; align-items: center; gap: .5rem; padding: .3rem 0; }
+    .checkbox-row input[type="checkbox"] { accent-color: #0A1128; width: 1rem; height: 1rem; }
+    .checkbox-row span { font-size: .88rem; color: #374151; }
+    .hint { font-size: .75rem; color: #9CA3AF; margin-top: .3rem; }
+    .warn { font-size: .78rem; color: #B45309; background: #FEF3C7; border-radius: 8px; padding: .5rem .7rem; margin-top: .5rem; display: none; }
+
+    /* FILE */
+    .drop { border: 2px dashed #CBD5E1; border-radius: 12px; padding: 1.5rem; text-align: center; background: #fff; transition: all .3s; cursor: pointer; }
+    .drop:hover, .drop.drag { border-color: #4F6BED; background: #F7F8FE; }
+    .drop p { font-size: .88rem; color: #6B7280; margin-top: .4rem; }
+    .drop strong { color: #0A1128; }
+    .file-status { margin-top: .7rem; font-size: .82rem; color: #374151; display: none; }
+    .btn-mini { background: #fff; color: #0A1128; border: 1.5px solid #0A1128; border-radius: 999px; padding: .4rem 1rem; font-weight: 600; font-size: .8rem; cursor: pointer; transition: all .2s; font-family: inherit; }
+    .btn-mini:hover { background: #F4F5F7; border-color: #D4AF37; }
+
+    /* GENERATE */
+    .btn-generate { width: 100%; padding: .95rem; background: #0A1128; color: #fff; border: none; border-radius: 999px; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: all .3s; font-family: inherit; box-shadow: 0 6px 18px rgba(10,17,40,.25); }
+    .btn-generate:hover { background: #152245; transform: translateY(-1px); }
+    .btn-generate:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+    /* CHART + RESULTS */
+    #chartCard, #resultsCard { display: none; margin-top: 1.25rem; }
+    #chart { width: 100%; min-height: 480px; }
+    .dl-row { display: flex; gap: .75rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
+    .res-table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: .9rem; }
+    .res-table th { background: #0A1128; color: #fff; padding: .6rem .9rem; text-align: center; font-weight: 600; }
+    .res-table td { padding: .55rem .9rem; border-bottom: 1px solid #F3F4F6; text-align: center; color: #374151; }
+    .res-table td:first-child { text-align: left; font-weight: 500; color: #0A1128; }
+    .interpretation { margin-top: 1rem; background: #F0F4FF; border: 1px solid #D6DEFF; border-radius: 12px; padding: 1rem 1.2rem; font-size: .92rem; color: #1F2937; line-height: 1.65; }
+    .sig-badge { display: inline-block; padding: .2rem .7rem; border-radius: 999px; font-size: .75rem; font-weight: 700; }
+    .sig-yes { background: #FDF1D7; color: #8A6D1D; border: 1px solid #E4CE83; }
+    .sig-no { background: #F3F4F6; color: #6B7280; border: 1px solid #D1D5DB; }
+    .error-box { display: none; margin-top: .8rem; background: #FEF2F2; color: #B91C1C; border: 1px solid #FECACA; border-radius: 10px; padding: .6rem .9rem; font-size: .85rem; }
+
+    /* FOOTER */
+    footer { text-align: center; padding: 2rem 2rem; color: #9CA3AF; font-size: .85rem; border-top: 1px solid #F3F4F6; margin-top: 2rem; }
+    footer a { color: #0A1128; text-decoration: none; font-weight: 500; }
+    footer a:hover { color: #B8962E; }
+    .footer-links { margin-bottom: .5rem; }
+    .footer-links a { margin: 0 .5rem; }
+
+    /* COOKIE BANNER */
+    .cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; background: #0A1128; color: #E5E7EB; padding: 1rem 1.5rem; display: none; justify-content: center; align-items: center; gap: 1.25rem; flex-wrap: wrap; z-index: 200; font-size: .9rem; }
+    .cookie-banner.show { display: flex; }
+    .cookie-banner a { color: #D4AF37; text-decoration: underline; }
+    .cookie-accept { background: #D4AF37; color: #0A1128; border: none; padding: .55rem 1.5rem; border-radius: 999px; font-weight: 700; cursor: pointer; font-size: .9rem; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="logo" href="/">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="12" width="4" height="8" rx="1" fill="#0A1128"/><rect x="10" y="7" width="4" height="13" rx="1" fill="#D4AF37"/><rect x="16" y="4" width="4" height="16" rx="1" fill="#0A1128"/></svg>
+      Statistics Tool
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/#faq">FAQ</a>
+      <a href="privacy-policy.html">Privacy</a>
+    </div>
+  </nav>
+
+  <!-- HERO MINI -->
+  <div class="hero-band">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-title-row">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="12" width="4" height="8" rx="1" fill="#D4AF37"/><rect x="10" y="7" width="4" height="13" rx="1" fill="#FFFFFF"/><rect x="16" y="4" width="4" height="16" rx="1" fill="#D4AF37"/></svg>
+          <div class="hero-title">GraphZen</div>
+        </div>
+        <div class="hero-tagline">Free Online Statistical Analysis</div>
+        <div class="hero-chips">
+          <span class="hero-chip"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>100% in-browser — your data never leaves your device</span>
+          <span class="hero-chip"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Publication-ready export</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg width="240" height="110" viewBox="0 0 240 110" fill="none">
+          <line x1="15" y1="10" x2="15" y2="95" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+          <line x1="15" y1="95" x2="225" y2="95" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+          <rect x="35" y="50" width="24" height="45" rx="4" fill="#4F6BED"/>
+          <rect x="78" y="30" width="24" height="65" rx="4" fill="#D4AF37"/>
+          <rect x="121" y="62" width="24" height="33" rx="4" fill="#6889B0"/>
+          <rect x="164" y="22" width="24" height="73" rx="4" fill="#4F6BED" opacity="0.85"/>
+          <path d="M35 40 C 70 18, 110 42, 150 22 S 200 35, 222 28" stroke="#D4AF37" stroke-width="2.5" fill="none" opacity="0.9"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- AD SLOT TOP -->
+  <div class="ad-slot">
+    <!-- Google AdSense 광고 (승인 후 아래 코드로 교체) -->
+    <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXX" data-ad-slot="XXXXXXXX" data-ad-format="auto"></ins> -->
+    <div class="ad-placeholder">Advertisement</div>
+  </div>
+
+  <!-- TOOL -->
+  <div class="wrap">
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-header"><span class="num">1</span> Upload Your Data</div>
+        <div class="drop" id="dropZone">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M15 2v5h5"/><path d="M12 17v-6"/><path d="m9 14 3-3 3 3"/></svg>
+          <p><strong>Drop a CSV file here</strong> or click to browse</p>
+          <p>First row is treated as column headers</p>
+          <input type="file" id="fileInput" accept=".csv" style="display:none" />
+        </div>
+        <div class="file-status" id="fileStatus"></div>
+        <div style="margin-top: .7rem;">
+          <button class="btn-mini" id="loadSample">Try with sample data</button>
+        </div>
+        <div class="error-box" id="fileError"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-header"><span class="num">2</span> Configure Groups</div>
+        <label class="ctl">Graph Type</label>
+        <select id="graphType">
+          <option value="bar">Bar Graph (Mean ± SD)</option>
+          <option value="box">Box Plot</option>
+          <option value="violin">Violin Plot</option>
+        </select>
+        <label class="ctl">Select Numeric Columns to Compare <span style="color:#9CA3AF;font-weight:400;">(choose 2 or more)</span></label>
+        <div id="columnsBox"><p class="hint">Upload a CSV file first — numeric columns will appear here.</p></div>
+        <label class="ctl">Show Individual Data Points</label>
+        <div class="checkbox-row"><input type="checkbox" id="showPoints" checked /><span>Overlay individual data points on the graph</span></div>
+      </div>
+
+      <div class="card">
+        <div class="section-header"><span class="num">3</span> Axis Labels</div>
+        <label class="ctl">X-axis Label</label>
+        <input type="text" id="xLabel" placeholder="Groups" />
+        <label class="ctl">Y-axis Label</label>
+        <input type="text" id="yLabel" placeholder="Value" />
+        <div class="hint">Used on the graph and in exported files.</div>
+      </div>
+
+      <div class="card">
+        <div class="section-header"><span class="num">4</span> Statistical Test</div>
+        <label class="ctl">Test</label>
+        <select id="testType">
+          <option value="none">No statistical test</option>
+          <option value="student">Student's t-test (2 groups, equal variance)</option>
+          <option value="welch">Welch's t-test (2 groups, unequal variance)</option>
+          <option value="anova">One-way ANOVA (3+ groups)</option>
+        </select>
+        <div class="warn" id="testWarn"></div>
+        <div class="hint">Runs automatically when you generate the visualization. p-values are computed in your browser and verified against reference implementations.</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 1.25rem;">
+      <button class="btn-generate" id="generateBtn" disabled>Generate Visualization</button>
+      <div class="error-box" id="genError"></div>
+    </div>
+
+    <!-- CHART -->
+    <div class="card" id="chartCard">
+      <div class="section-header">Your Graph</div>
+      <div id="chart"></div>
+      <div class="dl-row">
+        <button class="btn-mini" id="dlPng">Download PNG</button>
+        <button class="btn-mini" id="dlSvg">Download SVG</button>
+      </div>
+    </div>
+
+    <!-- AD SLOT MID -->
+    <div class="ad-slot" id="adMid" style="display:none;">
+      <div class="ad-placeholder">Advertisement</div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="card" id="resultsCard">
+      <div class="section-header">Statistical Results</div>
+      <div id="resultsBody"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="/">Home</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a> · <a href="privacy-policy.html">Privacy Policy</a>
+    </div>
+    <p>© 2026 statistics.thinkflo.net · Part of <a href="https://thinkflo.net">ThinkFlo</a></p>
+    <p style="margin-top:0.5rem;">Free online statistical analysis tool — GraphPad Prism alternative</p>
+    <p style="margin-top:0.75rem; font-size:0.75rem; color:#B9BFC7;">GraphPad Prism is a trademark of GraphPad Software, Inc. This site is not affiliated with, endorsed by, or sponsored by GraphPad Software.</p>
+  </footer>
+
+  <!-- COOKIE BANNER -->
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie consent">
+    <span>We use cookies to serve relevant ads and improve your experience. <a href="privacy-policy.html">Learn more</a></span>
+    <button class="cookie-accept" id="cookieAccept">Accept</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

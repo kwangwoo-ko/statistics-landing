@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GraphZen — Statistical Engine Regression Tests</title>
+  <style>
+    body { font-family: 'Inter', -apple-system, sans-serif; color: #0A1128; background: #FAFAFA; padding: 2rem; max-width: 900px; margin: 0 auto; }
+    h1 { font-size: 1.4rem; }
+    .pass { color: #1a7f37; font-weight: 700; }
+    .fail { color: #b91c1c; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 1rem; background: #fff; }
+    td, th { padding: 0.3rem 0.5rem; border-bottom: 1px solid #E5E7EB; text-align: left; }
+  </style>
+</head>
+<body>
+  <h1>GraphZen Statistical Engine — Regression Tests</h1>
+  <p>Compares this browser's engine output against scipy reference values (see stats_refs.json).</p>
+  <div id="summary">Running…</div>
+  <div id="rows"></div>
+  <script src="stats.js"></script>
+  <script>
+    fetch('stats_refs.json')
+      .then(function (r) { return r.json(); })
+      .then(function (cases) {
+        var rows = [], fails = 0, maxRel = 0, worst = null;
+        cases.forEach(function (c, i) {
+          var res, ref = c.p;
+          if (c.type === 'anova') res = GraphZenStats.anovaOneWay(c.groups);
+          else res = GraphZenStats.tTestIndependent(c.a, c.b, c.type === 'welch');
+          var err = Math.abs(ref - res.p) / Math.max(ref, 1e-300);
+          if (err > 1e-6) fails++;
+          if (err > maxRel) { maxRel = err; worst = { i: i, type: c.type, ref: ref, mine: res.p, err: err }; }
+          rows.push('<tr><td>' + i + '</td><td>' + c.type + '</td><td>' + ref.toExponential(4) + '</td><td>' + res.p.toExponential(4) + '</td><td>' + err.toExponential(2) + '</td><td>' + (err <= 1e-6 ? 'PASS' : 'FAIL') + '</td></tr>');
+        });
+        document.getElementById('summary').innerHTML =
+          '<span class="' + (fails === 0 ? 'pass' : 'fail') + '">' +
+          (fails === 0 ? 'ALL ' + cases.length + ' CASES PASSED' : fails + ' of ' + cases.length + ' CASES FAILED') +
+          '</span> — max relative error ' + maxRel.toExponential(3) +
+          (worst ? ' (worst: case ' + worst.i + ', ' + worst.type + ')' : '');
+        document.getElementById('rows').innerHTML = '<table><thead><tr><th>#</th><th>Type</th><th>scipy p</th><th>engine p</th><th>rel err</th><th>Status</th></tr></thead><tbody>' + rows.join('') + '</tbody></table>';
+      });
+  </script>
+</body>
+</html>
