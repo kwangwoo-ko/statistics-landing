@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linear Regression and R², Without the Fog | GraphZen</title>
+  <meta name="description" content="What the slope, intercept, p-value and R² actually tell you about a linear relationship — and the three things R² does not tell you." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="/">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="12" width="4" height="8" rx="1" fill="#0A1128"/><rect x="10" y="7" width="4" height="13" rx="1" fill="#D4AF37"/><rect x="16" y="4" width="4" height="16" rx="1" fill="#0A1128"/></svg>
+      Statistics Tool
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/learn/">Learn</a>
+      <a class="tool-link" href="/tool/">Launch Free Tool</a>
+    </div>
+  </nav>
+
+  <div class="hero-band">
+    <div class="hero-inner">
+      <span class="eyebrow">Regression · 4 min read</span>
+      <h1>Linear regression and R², without the fog</h1>
+      <p class="hero-sub">One line, four numbers, and a pile of conclusions people draw that the numbers do not support.</p>
+    </div>
+  </div>
+
+  <div class="ad-slot">
+    <!-- Google AdSense 광고 (승인 후 아래 코드로 교체) -->
+    <div class="ad-placeholder">Advertisement</div>
+  </div>
+
+  <div class="wrap">
+    <article>
+      <span class="meta">Updated November 2026 · Plain English · With examples</span>
+
+      <p>Linear regression fits the straight line that stays as close as possible to your points. The output looks intimidating for about a minute, then turns out to be four numbers: a <strong>slope</strong>, an <strong>intercept</strong>, a <strong>p-value</strong> and <strong>R²</strong>.</p>
+
+      <h2>What the numbers mean</h2>
+      <table class="data-table">
+        <thead><tr><th>Output</th><th>Meaning in one sentence</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Slope</strong></td><td>When X increases by 1, Y changes by this much on average — the direction and size of the relationship.</td></tr>
+          <tr><td><strong>Intercept</strong></td><td>The predicted Y when X = 0. Often meaningful (calibration), sometimes just a mathematical anchor.</td></tr>
+          <tr><td><strong>P value</strong></td><td>How surprising it would be to see a slope this large if there were no relationship at all. Small p = the slope is unlikely to be a fluke.</td></tr>
+          <tr><td><strong>R²</strong></td><td>The fraction of the variation in Y that the line explains — 0.81 means 81%.</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Reading R² honestly</h2>
+      <p>R² is best read as "how much of the scatter has disappeared". An R² of 0.9 means the points hug the line; 0.1 means the line barely improves on guessing the mean of Y. It is a measure of <em>fit</em>, not of importance, and certainly not of causality.</p>
+
+      <div class="callout">
+        <p><strong>What R² does not tell you:</strong></p>
+        <ul>
+          <li><strong>Whether the relationship is real.</strong> A tiny R² can still have a highly significant slope — and a big R² can come from a handful of points.</li>
+          <li><strong>Whether the line is the right shape.</strong> Data that curves can still produce a fine-looking straight line with a respectable R². Plot it.</li>
+          <li><strong>Cause and effect.</strong> Chocolate sales correlate with Nobel prizes per country. The line exists; the causal story does not.</li>
+        </ul>
+      </div>
+
+      <h2>Report the slope with its uncertainty</h2>
+      <p>A slope without a confidence interval is incomplete. "Each extra hour of study is associated with 3.2 more points (95% CI: 1.8 to 4.6, p &lt; 0.001, n = 45, R² = 0.42)" says everything a reader needs: direction, size, precision, significance and fit. GraphZen's regression report includes all of these — slope ± SE, the 95% CI, the intercept, R², Pearson r, the p-value, n, and Sy.x (the typical distance of points from the line).</p>
+
+      <h2>A quick sanity checklist</h2>
+      <ol>
+        <li><strong>Plot first.</strong> A scatter plot costs nothing and catches curved relationships, clusters and outliers before any number does.</li>
+        <li><strong>Look at the residuals if something feels off.</strong> Systematic curvature in the residuals means a straight line is the wrong model.</li>
+        <li><strong>Do not extrapolate.</strong> The line describes the range of X you measured. Predictions beyond that range are guesses dressed as equations.</li>
+        <li><strong>Beware one-point conclusions.</strong> If removing a single point changes the slope dramatically, report that honestly.</li>
+      </ol>
+
+      <div class="callout-gold">
+        <p><strong>In GraphZen:</strong> choose the Scatter Plot, pick X and Y from the dropdowns, and the tool fits the line, draws it on the chart, and reports the full regression table with an automatic interpretation.</p>
+      </div>
+    </article>
+
+    <div class="related">
+      <p class="label">Related guides</p>
+      <a href="p-value.html">What is a p-value, really?</a>
+      <a href="which-test.html">Which statistical test should I use?</a>
+      <a href="box-vs-violin.html">How to read box and violin plots</a>
+      <a href="glossary.html">Statistics glossary</a>
+    </div>
+
+    <div class="tool-cta">
+      <h2>Fit a line to your data.</h2>
+      <p>Scatter plot, regression line, full report — free in your browser.</p>
+      <a class="btn-gold" href="/tool/">Open GraphZen
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="/">Home</a> · <a href="/tool/">Tool</a> · <a href="/learn/">Learn</a> · <a href="/about.html">About</a> · <a href="/contact.html">Contact</a> · <a href="/privacy-policy.html">Privacy Policy</a>
+    </div>
+    <p>© 2026 statistics.thinkflo.net · Part of <a href="https://thinkflo.net">ThinkFlo</a></p>
+    <p style="margin-top:0.75rem; font-size:0.75rem; color:#B9BFC7;">GraphPad Prism is a trademark of GraphPad Software, Inc. This site is not affiliated with, endorsed by, or sponsored by GraphPad Software.</p>
+  </footer>
+
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie consent">
+    <span>We use cookies to serve relevant ads and improve your experience. <a href="/privacy-policy.html">Learn more</a></span>
+    <button class="cookie-accept" id="cookieAccept">Accept</button>
+  </div>
+  <script>
+    (function () {
+      var banner = document.getElementById('cookieBanner');
+      try { if (!localStorage.getItem('cookieConsent')) banner.classList.add('show'); } catch (e) { banner.classList.add('show'); }
+      document.getElementById('cookieAccept').addEventListener('click', function () {
+        try { localStorage.setItem('cookieConsent', 'accepted'); } catch (e) {}
+        banner.classList.remove('show');
+      });
+    })();
+  </script>
+
+</body>
+</html>

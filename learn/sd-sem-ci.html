@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SD vs SEM vs 95% CI — Which Error Bar Should I Use? | GraphZen</title>
+  <meta name="description" content="Standard deviation, standard error of the mean, and 95% confidence intervals look similar on a graph but mean very different things. How to choose and how journals see them." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="/">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="12" width="4" height="8" rx="1" fill="#0A1128"/><rect x="10" y="7" width="4" height="13" rx="1" fill="#D4AF37"/><rect x="16" y="4" width="4" height="16" rx="1" fill="#0A1128"/></svg>
+      Statistics Tool
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/learn/">Learn</a>
+      <a class="tool-link" href="/tool/">Launch Free Tool</a>
+    </div>
+  </nav>
+
+  <div class="hero-band">
+    <div class="hero-inner">
+      <span class="eyebrow">Concept · 4 min read</span>
+      <h1>SD vs SEM vs 95% CI</h1>
+      <p class="hero-sub">Three error bars that look identical on a graph — and answer three completely different questions.</p>
+    </div>
+  </div>
+
+  <div class="ad-slot">
+    <!-- Google AdSense 광고 (승인 후 아래 코드로 교체) -->
+    <div class="ad-placeholder">Advertisement</div>
+  </div>
+
+  <div class="wrap">
+    <article>
+      <span class="meta">Updated November 2026 · Plain English · With formulas</span>
+
+      <p>Two bar graphs with identical bars can tell different stories, depending on what the little whisker on top represents. This ambiguity is real — and it is why journals require you to state which one you used.</p>
+
+      <h2>The three candidates</h2>
+      <table class="data-table">
+        <thead><tr><th>Error bar</th><th>Answers the question</th><th>Formula</th></tr></thead>
+        <tbody>
+          <tr><td><strong>SD</strong> — standard deviation</td><td>"How spread out is the raw data?"</td><td>s (the usual sample SD)</td></tr>
+          <tr><td><strong>SEM</strong> — standard error of the mean</td><td>"How precisely do we know the mean?"</td><td>SD ÷ √n</td></tr>
+          <tr><td><strong>95% CI</strong> — confidence interval</td><td>"What range of true means is compatible with the data?"</td><td>mean ± t × SEM</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Why they differ — the √n</h2>
+      <p>Everything hinges on one fact: <strong>SEM shrinks as your sample grows</strong>, while SD does not. SD describes your data; SEM describes your estimate of the mean. With 100 values, the mean is known roughly ten times more precisely than with 1 value (√100 = 10) — even if the raw spread is identical.</p>
+      <p>This is why SEM bars look smaller than SD bars whenever n &gt; 1, and why an SEM bar can make a noisy group of 3 measurements look impressively tight. That is not cheating — it is just a different question being answered.</p>
+
+      <h2>Which one should you use?</h2>
+      <ul>
+        <li><strong>Want to show the variability of your data?</strong> Use SD. This is the most honest picture of the raw spread.</li>
+        <li><strong>Want to show how well you know the mean?</strong> Use SEM. Common in life sciences and physiology.</li>
+        <li><strong>Want to convey statistical precision and testability?</strong> Use 95% CI. If two groups' 95% CIs clearly separate, the difference will usually be significant. Confidence intervals are increasingly preferred because they show both the effect size and the precision at once.</li>
+      </ul>
+
+      <div class="callout">
+        <p><strong>The rule that prevents trouble:</strong> whatever you choose, <strong>say it in the figure caption</strong> — "mean ± SEM, n = 12". A graph that does not say which bar it is has not fully communicated.</p>
+      </div>
+
+      <h2>A worked example</h2>
+      <p>Take a group with mean 24.2, SD = 1.36, n = 20:</p>
+      <ul>
+        <li><strong>SD bar:</strong> 24.2 ± 1.36 — the spread of individual values.</li>
+        <li><strong>SEM bar:</strong> 24.2 ± 0.30 — 1.36 ÷ √20 — the precision of the mean.</li>
+        <li><strong>95% CI:</strong> 24.2 ± 0.64 — roughly 2.09 × SEM with 19 degrees of freedom — the plausible range for the true mean.</li>
+      </ul>
+      <p>Same data, three bars differing by a factor of four. Nothing changed except the question.</p>
+
+      <h2>The one comparison to avoid</h2>
+      <p>Comparing a study that uses SEM with one that uses SD will make the first look more precise. When reading papers — or writing them — always check the caption before comparing error bars across figures.</p>
+
+      <div class="callout-gold">
+        <p><strong>In GraphZen:</strong> the bar graph has an "Error Bars" selector — SD, SEM, 95% CI or none — and the results table and interpretation switch to match your choice automatically.</p>
+      </div>
+    </article>
+
+    <div class="related">
+      <p class="label">Related guides</p>
+      <a href="p-value.html">What is a p-value, really?</a>
+      <a href="box-vs-violin.html">How to read box and violin plots</a>
+      <a href="which-test.html">Which statistical test should I use?</a>
+      <a href="glossary.html">Statistics glossary</a>
+    </div>
+
+    <div class="tool-cta">
+      <h2>Make the graph, choose the error bar.</h2>
+      <p>GraphZen draws bar graphs with SD, SEM or 95% CI — labelled, and reflected in the results.</p>
+      <a class="btn-gold" href="/tool/">Open GraphZen
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="/">Home</a> · <a href="/tool/">Tool</a> · <a href="/learn/">Learn</a> · <a href="/about.html">About</a> · <a href="/contact.html">Contact</a> · <a href="/privacy-policy.html">Privacy Policy</a>
+    </div>
+    <p>© 2026 statistics.thinkflo.net · Part of <a href="https://thinkflo.net">ThinkFlo</a></p>
+    <p style="margin-top:0.75rem; font-size:0.75rem; color:#B9BFC7;">GraphPad Prism is a trademark of GraphPad Software, Inc. This site is not affiliated with, endorsed by, or sponsored by GraphPad Software.</p>
+  </footer>
+
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie consent">
+    <span>We use cookies to serve relevant ads and improve your experience. <a href="/privacy-policy.html">Learn more</a></span>
+    <button class="cookie-accept" id="cookieAccept">Accept</button>
+  </div>
+  <script>
+    (function () {
+      var banner = document.getElementById('cookieBanner');
+      try { if (!localStorage.getItem('cookieConsent')) banner.classList.add('show'); } catch (e) { banner.classList.add('show'); }
+      document.getElementById('cookieAccept').addEventListener('click', function () {
+        try { localStorage.setItem('cookieConsent', 'accepted'); } catch (e) {}
+        banner.classList.remove('show');
+      });
+    })();
+  </script>
+
+</body>
+</html>

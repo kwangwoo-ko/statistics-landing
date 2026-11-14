@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Which Statistical Test Should I Use? — Interactive Guide | GraphZen</title>
+  <meta name="description" content="Answer three quick questions and get a clear recommendation: t-test, Welch's t-test, ANOVA, Mann-Whitney U or Kruskal-Wallis — with the reasoning explained in plain English." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="/">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="12" width="4" height="8" rx="1" fill="#0A1128"/><rect x="10" y="7" width="4" height="13" rx="1" fill="#D4AF37"/><rect x="16" y="4" width="4" height="16" rx="1" fill="#0A1128"/></svg>
+      Statistics Tool
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/learn/">Learn</a>
+      <a class="tool-link" href="/tool/">Launch Free Tool</a>
+    </div>
+  </nav>
+
+  <div class="hero-band">
+    <div class="hero-inner">
+      <span class="eyebrow">Start Here · Interactive</span>
+      <h1>Which statistical test should I use?</h1>
+      <p class="hero-sub">Three questions about your data — thirty seconds — and a recommendation with the reasoning spelled out.</p>
+    </div>
+  </div>
+
+  <div class="ad-slot">
+    <!-- Google AdSense 광고 (승인 후 아래 코드로 교체) -->
+    <div class="ad-placeholder">Advertisement</div>
+  </div>
+
+  <div class="wrap">
+    <article>
+      <span class="meta">Updated November 2026 · 30-second quiz · Plain English</span>
+
+      <p>Picking a test trips up almost everyone — and that is fine. The choice comes down to three properties of your data, not to how much statistics you remember. Answer below and you will see both the answer and the reason.</p>
+
+      <!-- QUIZ -->
+      <div class="quiz" id="quizBox">
+        <div class="step" id="quizStep">Question 1 of 3</div>
+        <h3 id="quizQuestion">How many groups (conditions) are you comparing?</h3>
+        <div class="quiz-opts" id="quizOptions"></div>
+        <div id="quizResult"></div>
+      </div>
+
+      <h2>How the decision works</h2>
+      <p>The quiz implements the same decision table a statistician would sketch on a napkin:</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Your data</th><th>Roughly normal, no strong outliers</th><th>Skewed or has outliers</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>2 independent groups</strong></td>
+            <td>Welch's t-test <br><span style="color:#9CA3AF;font-size:.85rem;">(Student's t-test if equal variance is a safe assumption)</span></td>
+            <td>Mann-Whitney U test</td>
+          </tr>
+          <tr>
+            <td><strong>3+ independent groups</strong></td>
+            <td>One-way ANOVA, then post-hoc comparisons</td>
+            <td>Kruskal-Wallis test, then post-hoc comparisons</td>
+          </tr>
+          <tr>
+            <td><strong>Paired measurements</strong></td>
+            <td>Paired t-test</td>
+            <td>Wilcoxon signed-rank test</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <p><strong>The one rule behind the table:</strong> parametric tests (t-test, ANOVA) compare <em>means</em> and assume the data is roughly bell-shaped. Rank-based tests (Mann-Whitney, Kruskal-Wallis) compare <em>distributions</em> and do not care about the shape. If a box or violin plot shows a strong skew or a lopsided tail, the rank-based test is the honest choice.</p>
+      </div>
+
+      <h2>Two practical notes</h2>
+      <p><strong>Equal variance is rare in real data.</strong> That is why Welch's t-test is the default recommendation for two groups — it does not assume the two groups vary equally, and it is almost as powerful when they happen to. Student's t-test is fine when group sizes and spreads are similar.</p>
+      <p><strong>"Not sure" about normality is a real answer.</strong> Plot your data (box or violin plot) before deciding. With 5–10 values per group, formal normality tests are unreliable anyway — a look at the shape is often the best evidence you have.</p>
+
+      <h2>What to report with each test</h2>
+      <ul>
+        <li><strong>t-test:</strong> the t statistic, degrees of freedom, the p-value, and the group means — with SD or SEM clearly labelled.</li>
+        <li><strong>ANOVA:</strong> F, both degrees of freedom, p — and post-hoc results if the overall test is significant.</li>
+        <li><strong>Mann-Whitney / Kruskal-Wallis:</strong> the U or H statistic, p, and group medians (or IQR) rather than means.</li>
+      </ul>
+
+      <div class="callout-gold">
+        <p><strong>Free and in your browser:</strong> GraphZen runs t-tests, ANOVA, Mann-Whitney U and Kruskal-Wallis on your own CSV or Excel file — and reports these exact values, including guidance on what they mean.</p>
+      </div>
+    </article>
+
+    <div class="related">
+      <p class="label">Related guides</p>
+      <a href="p-value.html">What is a p-value, really?</a>
+      <a href="parametric-vs-nonparametric.html">Parametric vs non-parametric tests</a>
+      <a href="sd-sem-ci.html">SD vs SEM vs 95% CI — which error bar?</a>
+      <a href="box-vs-violin.html">How to read box and violin plots</a>
+    </div>
+
+    <div class="tool-cta">
+      <h2>Run the test on your own data.</h2>
+      <p>Free, no sign-up, everything computed in your browser.</p>
+      <a class="btn-gold" href="/tool/">Open GraphZen
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="/">Home</a> · <a href="/tool/">Tool</a> · <a href="/learn/">Learn</a> · <a href="/about.html">About</a> · <a href="/contact.html">Contact</a> · <a href="/privacy-policy.html">Privacy Policy</a>
+    </div>
+    <p>© 2026 statistics.thinkflo.net · Part of <a href="https://thinkflo.net">ThinkFlo</a></p>
+    <p style="margin-top:0.75rem; font-size:0.75rem; color:#B9BFC7;">GraphPad Prism is a trademark of GraphPad Software, Inc. This site is not affiliated with, endorsed by, or sponsored by GraphPad Software.</p>
+  </footer>
+
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie consent">
+    <span>We use cookies to serve relevant ads and improve your experience. <a href="/privacy-policy.html">Learn more</a></span>
+    <button class="cookie-accept" id="cookieAccept">Accept</button>
+  </div>
+
+  <script>
+    (function () {
+      var banner = document.getElementById('cookieBanner');
+      try { if (!localStorage.getItem('cookieConsent')) banner.classList.add('show'); } catch (e) { banner.classList.add('show'); }
+      document.getElementById('cookieAccept').addEventListener('click', function () {
+        try { localStorage.setItem('cookieConsent', 'accepted'); } catch (e) {}
+        banner.classList.remove('show');
+      });
+    })();
+
+    (function () {
+      var stepEl = document.getElementById('quizStep');
+      var qEl = document.getElementById('quizQuestion');
+      var optsEl = document.getElementById('quizOptions');
+      var resEl = document.getElementById('quizResult');
+      var answers = {};
+
+      var questions = [
+        {
+          key: 'groups',
+          label: 'Question 1 of 3',
+          text: 'How many groups (conditions) are you comparing?',
+          options: [
+            { value: 'two', label: 'Two groups', sub: 'e.g. control vs treatment, or men vs women' },
+            { value: 'three', label: 'Three or more groups', sub: 'e.g. three doses, or four time points' }
+          ]
+        },
+        {
+          key: 'paired',
+          label: 'Question 2 of 3',
+          text: 'Are the measurements paired?',
+          options: [
+            { value: 'independent', label: 'Independent groups', sub: 'different individuals in each group' },
+            { value: 'paired', label: 'Paired measurements', sub: 'same individuals measured twice (before/after)' }
+          ]
+        },
+        {
+          key: 'shape',
+          label: 'Question 3 of 3',
+          text: 'Does the data look roughly symmetric (bell-shaped) without strong outliers?',
+          options: [
+            { value: 'normal', label: 'Yes, roughly symmetric', sub: 'check with a box plot or histogram if unsure' },
+            { value: 'skewed', label: 'No — skewed or strong outliers', sub: 'a long tail on one side, or lone extreme values' },
+            { value: 'unsure', label: 'Not sure', sub: 'both approaches will be explained' }
+          ]
+        }
+      ];
+
+      function recommended(a) {
+        if (a.groups === 'two' && a.paired === 'independent') {
+          if (a.shape === 'normal') return { test: "Welch's t-test", why: 'Two independent groups with roughly symmetric data: compare the group means. Welch\'s version does not assume equal variances, so it is the safer default; Student\'s t-test is an equally valid choice when the groups have similar spreads and sizes.', report: 't statistic, degrees of freedom, p-value, and both group means with SD or SEM labelled.', tool: 'welch', supported: true };
+          if (a.shape === 'skewed') return { test: 'Mann-Whitney U test', why: 'Two independent groups with skewed data or outliers: means get dragged around by extreme values, so compare the distributions using ranks instead. Report medians rather than means.', report: 'U statistic, p-value, and both group medians (or IQR).', tool: 'mannwhitney', supported: true };
+          return { test: "Welch's t-test — after a quick shape check", why: 'For two independent groups, Welch\'s t-test is the standard default. Before committing, look at a box or violin plot: if you see a strong skew or lone extreme values, switch to Mann-Whitney U.', report: 't statistic, degrees of freedom, p-value, and group means with SD or SEM.', tool: 'welch', supported: true };
+        }
+        if (a.groups === 'two' && a.paired === 'paired') {
+          return {
+            test: a.shape === 'skewed' ? 'Wilcoxon signed-rank test' : 'Paired t-test',
+            why: a.shape === 'skewed'
+              ? 'Paired measurements with skewed data: analyze the within-pair differences with a rank-based test.'
+              : 'Paired measurements: each subject acts as its own control, so analyze the within-pair differences with a paired t-test — much more powerful than treating the groups as independent.',
+            report: 'the test statistic, degrees of freedom (paired t-test), p-value, and the mean (or median) difference with its confidence interval.',
+            tool: null, supported: false,
+            note: 'GraphZen currently supports tests for independent groups. Paired tests are on the roadmap — for now the concepts above still apply.'
+          };
+        }
+        if (a.groups === 'three' && a.paired === 'independent') {
+          if (a.shape === 'normal') return { test: 'One-way ANOVA', why: 'Three or more independent groups with roughly symmetric data: ANOVA asks whether at least two of the group means differ. If it is significant, follow up with post-hoc pairwise comparisons to find which groups differ.', report: 'F statistic, both degrees of freedom, p-value — plus post-hoc results when significant.', tool: 'anova', supported: true };
+          if (a.shape === 'skewed') return { test: 'Kruskal-Wallis test', why: 'Three or more independent groups with skewed data or outliers: the rank-based alternative to ANOVA. If significant, follow up with pairwise Mann-Whitney comparisons (with a multiplicity correction).', report: 'H statistic, degrees of freedom, p-value, and group medians (or IQR).', tool: 'kruskal', supported: true };
+          return { test: 'One-way ANOVA — after a quick shape check', why: 'For three or more independent groups, ANOVA is the standard default. Look at box or violin plots first: if the distributions are clearly skewed, use Kruskal-Wallis instead.', report: 'F statistic, both degrees of freedom, p-value.', tool: 'anova', supported: true };
+        }
+        return {
+          test: a.shape === 'skewed' ? 'Friedman test' : 'Repeated-measures ANOVA',
+          why: 'Paired measurements across three or more conditions: a repeated-measures design. It accounts for the fact that every subject contributes one value to each condition.',
+          report: 'the test statistic, degrees of freedom, p-value, and post-hoc pairwise comparisons.',
+          tool: null, supported: false,
+          note: 'GraphZen currently supports tests for independent groups. Repeated-measures tests are on the roadmap.'
+        };
+      }
+
+      function renderQuestion(idx) {
+        var q = questions[idx];
+        stepEl.textContent = q.label;
+        qEl.textContent = q.text;
+        optsEl.innerHTML = '';
+        resEl.innerHTML = '';
+        q.options.forEach(function (opt) {
+          var b = document.createElement('button');
+          b.className = 'quiz-btn';
+          b.innerHTML = opt.label + '<span class="sub">' + opt.sub + '</span>';
+          b.addEventListener('click', function () {
+            answers[q.key] = opt.value;
+            if (idx < questions.length - 1) renderQuestion(idx + 1);
+            else renderResult();
+          });
+          optsEl.appendChild(b);
+        });
+      }
+
+      function renderResult() {
+        var r = recommended(answers);
+        stepEl.textContent = 'Result';
+        qEl.textContent = 'Your recommended test';
+        optsEl.innerHTML = '';
+        var html = '<div class="quiz-result">' +
+          '<span class="badge">Recommended</span>' +
+          '<h3>' + r.test + '</h3>' +
+          '<p><strong>Why:</strong> ' + r.why + '</p>' +
+          '<p><strong>What to report:</strong> ' + r.report + '</p>';
+        if (r.note) html += '<div class="quiz-note">' + r.note + '</div>';
+        if (r.supported) {
+          html += '<p style="margin-top:.9rem;"><a class="btn-gold" style="text-decoration:none;" href="/tool/">Run it in GraphZen →</a></p>';
+        }
+        html += '<button class="quiz-reset" id="quizReset">Start over</button></div>';
+        resEl.innerHTML = html;
+        document.getElementById('quizReset').addEventListener('click', function () {
+          answers = {};
+          renderQuestion(0);
+        });
+      }
+
+      renderQuestion(0);
+    })();
+  </script>
+
+</body>
+</html>

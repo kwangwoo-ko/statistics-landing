@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What Is a P-Value, Really? — A Plain-English Guide | GraphZen</title>
+  <meta name="description" content="What a p-value actually means, what it does not mean, and why p < 0.05 is a convention rather than a law of nature. Two-minute explanation with examples." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="/">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="12" width="4" height="8" rx="1" fill="#0A1128"/><rect x="10" y="7" width="4" height="13" rx="1" fill="#D4AF37"/><rect x="16" y="4" width="4" height="16" rx="1" fill="#0A1128"/></svg>
+      Statistics Tool
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/learn/">Learn</a>
+      <a class="tool-link" href="/tool/">Launch Free Tool</a>
+    </div>
+  </nav>
+
+  <div class="hero-band">
+    <div class="hero-inner">
+      <span class="eyebrow">Concept · 3 min read</span>
+      <h1>What is a p-value, really?</h1>
+      <p class="hero-sub">The most-used and most-misread number in science. Here is the version you can actually remember.</p>
+    </div>
+  </div>
+
+  <div class="ad-slot">
+    <!-- Google AdSense 광고 (승인 후 아래 코드로 교체) -->
+    <div class="ad-placeholder">Advertisement</div>
+  </div>
+
+  <div class="wrap">
+    <article>
+      <span class="meta">Updated November 2026 · Plain English · No formulas required</span>
+
+      <p>Your t-test just returned <strong>p = 0.03</strong>. Does that mean there is a 3% chance your hypothesis is wrong? No. Does it mean there is a 97% chance it is right? Also no. Both readings are extremely common — and both are wrong.</p>
+
+      <h2>The correct sentence</h2>
+      <p>A p-value answers exactly one question:</p>
+      <div class="callout-gold">
+        <p><strong>If there were truly no difference (or no relationship), what is the probability of seeing data at least this extreme?</strong> That probability is the p-value.</p>
+      </div>
+      <p>So p = 0.03 means: <em>if the null hypothesis were true, results this extreme would happen about 3 times in 100.</em> It says nothing directly about the probability that the null hypothesis is true — that would require prior beliefs about how likely a real effect is, which is a different (Bayesian) question entirely.</p>
+
+      <h2>Why 0.05?</h2>
+      <p>There is nothing magical about 0.05. It is a convention — a shared line for "surprising enough to take seriously" — that became standard in the mid-20th century. It is not a law of nature, and crossing it does not change what your data is. A result at p = 0.049 and one at p = 0.051 are equally interesting; they simply fall on different sides of an arbitrary line.</p>
+      <p>That is why good papers report the actual p-value (p = 0.032) rather than just "significant". And why "p = 0.06, a trend toward significance" is a red flag — either the evidence is there or it is not; the number speaks for itself.</p>
+
+      <h2>What a p-value does not tell you</h2>
+      <table class="data-table">
+        <thead><tr><th>Misreading</th><th>Reality</th></tr></thead>
+        <tbody>
+          <tr><td>"p = 0.03 → 3% chance the null hypothesis is true"</td><td>It is the probability of the data given the null, not the probability of the null given the data.</td></tr>
+          <tr><td>"p &lt; 0.05, so the effect is big and important"</td><td>Statistical significance is not practical importance. With a large enough sample, tiny meaningless differences become "significant". Always look at effect size.</td></tr>
+          <tr><td>"p &gt; 0.05, so there is no effect"</td><td>Absence of evidence is not evidence of absence. Small samples often fail to detect real effects (low power).</td></tr>
+          <tr><td>"p = 0.001 is more 'true' than p = 0.04"</td><td>A smaller p means the data would be rarer under the null — nothing more. Both are just evidence against the null.</td></tr>
+        </tbody>
+      </table>
+
+      <h2>What to report alongside it</h2>
+      <p>A p-value alone is a thin description of a result. The scientific standard is to report the p-value <strong>together with</strong>:</p>
+      <ul>
+        <li><strong>the effect size</strong> — how big is the difference? (the group means or medians, the slope, etc.)</li>
+        <li><strong>a confidence interval</strong> — how precise is the estimate?</li>
+        <li><strong>the sample size</strong> — how much data is this conclusion built on?</li>
+      </ul>
+      <p>GraphZen's statistical results include the test statistic, degrees of freedom, p-value and group summaries for exactly this reason — so you can write a complete sentence, not just "it was significant".</p>
+
+      <div class="callout">
+        <p><strong>One-sentence summary to remember:</strong> the p-value is the chance of seeing data this surprising if nothing were going on. Small p = surprising. It is not the chance you are wrong.</p>
+      </div>
+    </article>
+
+    <div class="related">
+      <p class="label">Related guides</p>
+      <a href="which-test.html">Which statistical test should I use?</a>
+      <a href="sd-sem-ci.html">SD vs SEM vs 95% CI — which error bar?</a>
+      <a href="parametric-vs-nonparametric.html">Parametric vs non-parametric tests</a>
+      <a href="glossary.html">Statistics glossary</a>
+    </div>
+
+    <div class="tool-cta">
+      <h2>See a real p-value on your own data.</h2>
+      <p>Upload a CSV or Excel file — GraphZen computes the test and explains the result in plain language.</p>
+      <a class="btn-gold" href="/tool/">Open GraphZen
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="/">Home</a> · <a href="/tool/">Tool</a> · <a href="/learn/">Learn</a> · <a href="/about.html">About</a> · <a href="/contact.html">Contact</a> · <a href="/privacy-policy.html">Privacy Policy</a>
+    </div>
+    <p>© 2026 statistics.thinkflo.net · Part of <a href="https://thinkflo.net">ThinkFlo</a></p>
+    <p style="margin-top:0.75rem; font-size:0.75rem; color:#B9BFC7;">GraphPad Prism is a trademark of GraphPad Software, Inc. This site is not affiliated with, endorsed by, or sponsored by GraphPad Software.</p>
+  </footer>
+
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie consent">
+    <span>We use cookies to serve relevant ads and improve your experience. <a href="/privacy-policy.html">Learn more</a></span>
+    <button class="cookie-accept" id="cookieAccept">Accept</button>
+  </div>
+  <script>
+    (function () {
+      var banner = document.getElementById('cookieBanner');
+      try { if (!localStorage.getItem('cookieConsent')) banner.classList.add('show'); } catch (e) { banner.classList.add('show'); }
+      document.getElementById('cookieAccept').addEventListener('click', function () {
+        try { localStorage.setItem('cookieConsent', 'accepted'); } catch (e) {}
+        banner.classList.remove('show');
+      });
+    })();
+  </script>
+
+</body>
+</html>

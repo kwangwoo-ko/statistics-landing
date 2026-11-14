@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://statistics.thinkflo.net/sitemap.xml

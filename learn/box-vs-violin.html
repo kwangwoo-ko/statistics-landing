@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to Read Box and Violin Plots — Two Common Misreadings | GraphZen</title>
+  <meta name="description" content="What the box, whiskers, notches and points actually represent in box plots and violin plots — plus two misreadings that change conclusions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="/">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="12" width="4" height="8" rx="1" fill="#0A1128"/><rect x="10" y="7" width="4" height="13" rx="1" fill="#D4AF37"/><rect x="16" y="4" width="4" height="16" rx="1" fill="#0A1128"/></svg>
+      Statistics Tool
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/learn/">Learn</a>
+      <a class="tool-link" href="/tool/">Launch Free Tool</a>
+    </div>
+  </nav>
+
+  <div class="hero-band">
+    <div class="hero-inner">
+      <span class="eyebrow">Reading Graphs · 4 min read</span>
+      <h1>How to read box and violin plots</h1>
+      <p class="hero-sub">The two most informative graphs in statistics — and the two most common ways to misread them.</p>
+    </div>
+  </div>
+
+  <div class="ad-slot">
+    <!-- Google AdSense 광고 (승인 후 아래 코드로 교체) -->
+    <div class="ad-placeholder">Advertisement</div>
+  </div>
+
+  <div class="wrap">
+    <article>
+      <span class="meta">Updated November 2026 · Plain English · With examples</span>
+
+      <p>Bar graphs with error bars show a summary — a mean and a spread. Box and violin plots show the <em>whole distribution</em>: where the data is dense, where it is thin, and whether it is lopsided. That extra information is exactly where the misreadings happen.</p>
+
+      <h2>Anatomy of a box plot</h2>
+      <table class="data-table">
+        <thead><tr><th>Element</th><th>What it represents</th></tr></thead>
+        <tbody>
+          <tr><td>The line inside the box</td><td>The <strong>median</strong> — the middle value. Half the data is above it, half below. It is <em>not</em> the mean.</td></tr>
+          <tr><td>The box (bottom and top edges)</td><td>The <strong>interquartile range (IQR)</strong> — the middle 50% of values, from the 25th to the 75th percentile.</td></tr>
+          <tr><td>The whiskers</td><td>The range of values that are not outliers — typically extending to the most extreme data point within 1.5 × IQR from the box.</td></tr>
+          <tr><td>The individual points</td><td>Actual observations (in GraphZen, all of them when "show data points" is on) — outliers beyond the whiskers are always shown as points.</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Misreading #1: calling the middle line "the mean"</h2>
+      <p>The line inside the box is the median. In a symmetric distribution the mean and median are close, so the confusion is harmless — until the data is skewed, which is precisely when box plots matter. In a skewed group the mean can sit well away from the median, and the two tell different stories. If you want a mean, say mean.</p>
+
+      <h2>Misreading #2: assuming a long whisker means "outliers"</h2>
+      <p>Whisker length reflects the spread of the non-outlying data. A group with a long whisker is not "full of outliers" — it is simply more variable on that side. Outliers are the points beyond the whiskers, and GraphZen draws them individually so you can see how many there are and how far out they sit.</p>
+
+      <h2>Anatomy of a violin plot</h2>
+      <p>A violin plot is a box plot with the distribution turned sideways: the width at each height shows <strong>how many observations are near that value</strong>. A wide belly means lots of data there; a thin neck means few. Inside the violin, GraphZen draws a miniature box (median and quartiles), so you get both views at once.</p>
+      <p>Violins shine when distributions are multi-peaked or unusually shaped — two clusters of values would be invisible in a mean-and-error-bar chart but obvious as a two-bellied violin.</p>
+
+      <h2>So which graph should you use?</h2>
+      <ul>
+        <li><strong>Comparing a few groups, want clarity:</strong> box plot.</li>
+        <li><strong>Shapes matter (skew, multiple peaks):</strong> violin plot.</li>
+        <li><strong>Audience expects a paper-style bar chart:</strong> bar with SD/SEM — but always plot the raw points if the groups are small.</li>
+      </ul>
+
+      <div class="callout">
+        <p><strong>The safest habit:</strong> show the raw data. With fewer than ~20 values per group, the mean and error bar hide how the data is distributed — and reviewers increasingly ask for points to be visible.</p>
+      </div>
+
+      <h2>How this connects to your test choice</h2>
+      <p>Box and violin plots are also the cheapest normality check you have. If the median sits far from the box centre, or the points trail off to one side, the data is skewed — a strong argument for a rank-based test (Mann-Whitney U, Kruskal-Wallis) instead of a t-test or ANOVA. See <a href="parametric-vs-nonparametric.html">parametric vs non-parametric tests</a> for the full reasoning.</p>
+
+      <div class="callout-gold">
+        <p><strong>In GraphZen:</strong> choose Box or Violin, tick "show individual data points", and the tool also prints a distribution summary — n, median, IQR, min and max for every group.</p>
+      </div>
+    </article>
+
+    <div class="related">
+      <p class="label">Related guides</p>
+      <a href="parametric-vs-nonparametric.html">Parametric vs non-parametric tests</a>
+      <a href="sd-sem-ci.html">SD vs SEM vs 95% CI — which error bar?</a>
+      <a href="which-test.html">Which statistical test should I use?</a>
+      <a href="glossary.html">Statistics glossary</a>
+    </div>
+
+    <div class="tool-cta">
+      <h2>Make one with your data.</h2>
+      <p>Box and violin plots, with every point visible and medians reported — in the browser, free.</p>
+      <a class="btn-gold" href="/tool/">Open GraphZen
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="/">Home</a> · <a href="/tool/">Tool</a> · <a href="/learn/">Learn</a> · <a href="/about.html">About</a> · <a href="/contact.html">Contact</a> · <a href="/privacy-policy.html">Privacy Policy</a>
+    </div>
+    <p>© 2026 statistics.thinkflo.net · Part of <a href="https://thinkflo.net">ThinkFlo</a></p>
+    <p style="margin-top:0.75rem; font-size:0.75rem; color:#B9BFC7;">GraphPad Prism is a trademark of GraphPad Software, Inc. This site is not affiliated with, endorsed by, or sponsored by GraphPad Software.</p>
+  </footer>
+
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie consent">
+    <span>We use cookies to serve relevant ads and improve your experience. <a href="/privacy-policy.html">Learn more</a></span>
+    <button class="cookie-accept" id="cookieAccept">Accept</button>
+  </div>
+  <script>
+    (function () {
+      var banner = document.getElementById('cookieBanner');
+      try { if (!localStorage.getItem('cookieConsent')) banner.classList.add('show'); } catch (e) { banner.classList.add('show'); }
+      document.getElementById('cookieAccept').addEventListener('click', function () {
+        try { localStorage.setItem('cookieConsent', 'accepted'); } catch (e) {}
+        banner.classList.remove('show');
+      });
+    })();
+  </script>
+
+</body>
+</html>

@@ -122,6 +122,10 @@
       .hero { padding: 3.5rem 1.5rem 2rem; }
       .hero-btns { flex-direction: column; align-items: center; }
     }
+
+    .nav-links { display: flex; align-items: center; gap: 1.2rem; }
+    .nav-links a.lrn { color: #6B7280; text-decoration: none; font-size: .9rem; font-weight: 500; }
+    .nav-links a.lrn:hover { color: #0A1128; }
   </style>
 </head>
 <body>
@@ -132,7 +136,7 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="12" width="4" height="8" rx="1" fill="#0A1128"/><rect x="10" y="7" width="4" height="13" rx="1" fill="#D4AF37"/><rect x="16" y="4" width="4" height="16" rx="1" fill="#0A1128"/></svg>
       Statistics Tool
     </a>
-    <a class="nav-cta" href="/tool/">Launch Free Tool
+    <div class="nav-links"><a class="lrn" href="/learn/">Learn</a></div><a class="nav-cta" href="/tool/">Launch Free Tool
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
     </a>
   </nav>

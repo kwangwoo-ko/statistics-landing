@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Statistics Glossary — 14 Terms in Plain English | GraphZen</title>
+  <meta name="description" content="A plain-English glossary of the statistics terms people keep half-remembering: p-value, α, t-test, ANOVA, Mann-Whitney, Kruskal-Wallis, IQR, SEM, power and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="/">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="12" width="4" height="8" rx="1" fill="#0A1128"/><rect x="10" y="7" width="4" height="13" rx="1" fill="#D4AF37"/><rect x="16" y="4" width="4" height="16" rx="1" fill="#0A1128"/></svg>
+      Statistics Tool
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/learn/">Learn</a>
+      <a class="tool-link" href="/tool/">Launch Free Tool</a>
+    </div>
+  </nav>
+
+  <div class="hero-band">
+    <div class="hero-inner">
+      <span class="eyebrow">Reference</span>
+      <h1>Statistics glossary</h1>
+      <p class="hero-sub">The terms people keep half-remembering — each in one honest paragraph, with the mistake it usually comes with.</p>
+    </div>
+  </div>
+
+  <div class="ad-slot">
+    <!-- Google AdSense 광고 (승인 후 아래 코드로 교체) -->
+    <div class="ad-placeholder">Advertisement</div>
+  </div>
+
+  <div class="wrap">
+    <div class="toc">
+      <p class="label">Jump to</p>
+      <a href="#p-value">P-value</a>
+      <a href="#alpha">α (alpha)</a>
+      <a href="#paired">Paired vs independent</a>
+      <a href="#ttest">t-test</a>
+      <a href="#welch">Welch's t-test</a>
+      <a href="#anova">ANOVA</a>
+      <a href="#mannwhitney">Mann-Whitney U</a>
+      <a href="#kruskal">Kruskal-Wallis</a>
+      <a href="#iqr">Median &amp; IQR</a>
+      <a href="#sd">SD</a>
+      <a href="#sem">SEM</a>
+      <a href="#ci">95% CI</a>
+      <a href="#normality">Normality</a>
+      <a href="#power">Statistical power</a>
+      <a href="#r2">R²</a>
+    </div>
+
+    <article>
+      <div class="gloss-item" id="p-value">
+        <h3>P-value</h3>
+        <p>The probability of seeing data at least as extreme as yours <em>if there were no effect</em>. Smaller p means your data would be more surprising under "nothing is going on".</p>
+        <p class="mistake">Common mistake: reading it as "the probability the hypothesis is wrong".</p>
+      </div>
+
+      <div class="gloss-item" id="alpha">
+        <h3>α (alpha), the significance level</h3>
+        <p>The threshold you compare p-values against — conventionally 0.05. Set it <em>before</em> looking at the data, not after.</p>
+        <p class="mistake">Common mistake: interpreting 0.05 as a law of nature rather than a convention.</p>
+      </div>
+
+      <div class="gloss-item" id="paired">
+        <h3>Paired vs independent data</h3>
+        <p>Independent: different individuals in each group. Paired: the same individual measured twice (before/after). Paired designs need paired tests — they are usually more powerful because each subject is its own control.</p>
+        <p class="mistake">Common mistake: running an independent-groups test on paired data.</p>
+      </div>
+
+      <div class="gloss-item" id="ttest">
+        <h3>t-test (Student's)</h3>
+        <p>Compares the <em>means</em> of two independent groups. It assumes roughly normal data and equal variances.</p>
+        <p class="mistake">Common mistake: using it on skewed data or wildly unequal group sizes.</p>
+      </div>
+
+      <div class="gloss-item" id="welch">
+        <h3>Welch's t-test</h3>
+        <p>A t-test variant that does <em>not</em> assume equal variances. It is the safer default for two-group comparisons and loses almost nothing when variances happen to be equal.</p>
+        <p class="mistake">Common mistake: assuming Student's version is the "standard" and Welch's is exotic — it is the other way around in practice.</p>
+      </div>
+
+      <div class="gloss-item" id="anova">
+        <h3>One-way ANOVA</h3>
+        <p>Compares the means of <em>three or more</em> independent groups. A significant ANOVA says "at least two groups differ" — it does not say which.</p>
+        <p class="mistake">Common mistake: running multiple t-tests instead of ANOVA, which inflates the false-positive rate.</p>
+      </div>
+
+      <div class="gloss-item" id="mannwhitney">
+        <h3>Mann-Whitney U test</h3>
+        <p>The rank-based alternative to a t-test for two independent groups. Compares distributions rather than means, so it tolerates skew and outliers. Report medians, not means.</p>
+        <p class="mistake">Common mistake: reporting "mean ± SD" in a paper that ran Mann-Whitney.</p>
+      </div>
+
+      <div class="gloss-item" id="kruskal">
+        <h3>Kruskal-Wallis test</h3>
+        <p>The rank-based alternative to one-way ANOVA for three or more groups. A significant result means at least two distributions differ; follow up with pairwise comparisons.</p>
+        <p class="mistake">Common mistake: interpreting a significant H as proof that all groups differ.</p>
+      </div>
+
+      <div class="gloss-item" id="iqr">
+        <h3>Median &amp; IQR</h3>
+        <p>The median is the middle value. The IQR (interquartile range) is the span of the middle 50% of values — the width of the box in a box plot. Both are resistant to outliers.</p>
+        <p class="mistake">Common mistake: calling the middle line of a box plot "the mean".</p>
+      </div>
+
+      <div class="gloss-item" id="sd">
+        <h3>SD — standard deviation</h3>
+        <p>The typical distance of individual values from their mean. Describes how spread out the <em>data</em> is. Does not shrink as the sample grows.</p>
+        <p class="mistake">Common mistake: confusing it with the precision of the mean (see SEM).</p>
+      </div>
+
+      <div class="gloss-item" id="sem">
+        <h3>SEM — standard error of the mean</h3>
+        <p>SD ÷ √n. Describes how precisely the <em>mean</em> is estimated. Shrinks as the sample grows — which is why SEM bars look smaller than SD bars.</p>
+        <p class="mistake">Common mistake: using SEM to imply the data is tightly clustered.</p>
+      </div>
+
+      <div class="gloss-item" id="ci">
+        <h3>95% confidence interval</h3>
+        <p>The range of values compatible with your estimate at the conventional 95% level. Widely preferred over p-values alone because it shows both the effect size and its precision.</p>
+        <p class="mistake">Common mistake: saying "95% of the data lie inside the CI" — the CI is about the mean, not the data.</p>
+      </div>
+
+      <div class="gloss-item" id="normality">
+        <h3>Normality</h3>
+        <p>Whether the data is roughly bell-shaped. Check with a box plot or histogram first; formal normality tests are unreliable at small sample sizes.</p>
+        <p class="mistake">Common mistake: declaring data normal purely because a test with n = 6 failed to reject it.</p>
+      </div>
+
+      <div class="gloss-item" id="power">
+        <h3>Statistical power</h3>
+        <p>The chance of detecting a real effect of a given size. Power grows with sample size. A non-significant result from a small study often means "we could not tell", not "nothing is there".</p>
+        <p class="mistake">Common mistake: treating "not significant" as proof of no effect.</p>
+      </div>
+
+      <div class="gloss-item" id="r2">
+        <h3>R² — coefficient of determination</h3>
+        <p>The fraction of the variation in Y explained by X in a regression — 0.7 means 70%. A measure of fit, not of importance or causation.</p>
+        <p class="mistake">Common mistake: reading a high R² as evidence that X causes Y.</p>
+      </div>
+
+      <div class="callout-gold">
+        <p><strong>All of these have a matching test or graph in GraphZen</strong> — free, in your browser, with the values computed exactly as described here.</p>
+      </div>
+    </article>
+
+    <div class="related">
+      <p class="label">Related guides</p>
+      <a href="which-test.html">Which statistical test should I use?</a>
+      <a href="p-value.html">What is a p-value, really?</a>
+      <a href="sd-sem-ci.html">SD vs SEM vs 95% CI — which error bar?</a>
+      <a href="box-vs-violin.html">How to read box and violin plots</a>
+      <a href="parametric-vs-nonparametric.html">Parametric vs non-parametric tests</a>
+      <a href="regression-r2.html">Linear regression and R²</a>
+    </div>
+
+    <div class="tool-cta">
+      <h2>Put the glossary to work.</h2>
+      <p>Every term here maps to a feature in GraphZen — free, no sign-up.</p>
+      <a class="btn-gold" href="/tool/">Open GraphZen
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="/">Home</a> · <a href="/tool/">Tool</a> · <a href="/learn/">Learn</a> · <a href="/about.html">About</a> · <a href="/contact.html">Contact</a> · <a href="/privacy-policy.html">Privacy Policy</a>
+    </div>
+    <p>© 2026 statistics.thinkflo.net · Part of <a href="https://thinkflo.net">ThinkFlo</a></p>
+    <p style="margin-top:0.75rem; font-size:0.75rem; color:#B9BFC7;">GraphPad Prism is a trademark of GraphPad Software, Inc. This site is not affiliated with, endorsed by, or sponsored by GraphPad Software.</p>
+  </footer>
+
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie consent">
+    <span>We use cookies to serve relevant ads and improve your experience. <a href="/privacy-policy.html">Learn more</a></span>
+    <button class="cookie-accept" id="cookieAccept">Accept</button>
+  </div>
+  <script>
+    (function () {
+      var banner = document.getElementById('cookieBanner');
+      try { if (!localStorage.getItem('cookieConsent')) banner.classList.add('show'); } catch (e) { banner.classList.add('show'); }
+      document.getElementById('cookieAccept').addEventListener('click', function () {
+        try { localStorage.setItem('cookieConsent', 'accepted'); } catch (e) {}
+        banner.classList.remove('show');
+      });
+    })();
+  </script>
+
+</body>
+</html>
