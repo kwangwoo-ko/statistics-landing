@@ -123,9 +123,11 @@
       .hero-btns { flex-direction: column; align-items: center; }
     }
 
-    .nav-links { display: flex; align-items: center; gap: 1.2rem; }
-    .nav-links a.lrn { color: #6B7280; text-decoration: none; font-size: .9rem; font-weight: 500; }
-    .nav-links a.lrn:hover { color: #0A1128; }
+    .nav-links { display: flex; align-items: center; gap: 1.1rem; }
+    .nav-links a.utility { color: #9CA3AF; text-decoration: none; font-size: .85rem; font-weight: 500; transition: color .2s; }
+    .nav-links a.utility:hover { color: #0A1128; }
+    .nav-links a.lrn { color: #8A6D1D; background: #fff; border: 1.5px solid #E0CB8C; border-radius: 999px; padding: .42rem 1.1rem; text-decoration: none; font-size: .88rem; font-weight: 600; transition: all .2s; }
+    .nav-links a.lrn:hover { background: #FDF9EC; border-color: #D4AF37; }
   </style>
 </head>
 <body>
@@ -136,9 +138,14 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="12" width="4" height="8" rx="1" fill="#0A1128"/><rect x="10" y="7" width="4" height="13" rx="1" fill="#D4AF37"/><rect x="16" y="4" width="4" height="16" rx="1" fill="#0A1128"/></svg>
       Statistics Tool
     </a>
-    <div class="nav-links"><a class="lrn" href="/learn/">Learn</a></div><a class="nav-cta" href="/tool/">Launch Free Tool
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-    </a>
+    <div class="nav-links">
+      <a class="utility" href="/#faq">FAQ</a>
+      <a class="utility" href="/privacy-policy.html">Privacy</a>
+      <a class="lrn" href="/learn/">Learn</a>
+      <a class="nav-cta" href="/tool/">Launch Free Tool
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
   </nav>
 
   <!-- HERO -->

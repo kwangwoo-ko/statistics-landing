@@ -29,8 +29,11 @@
     /* NAV */
     nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; border-bottom: 1px solid #F3F4F6; position: sticky; top: 0; background: rgba(255,255,255,.85); backdrop-filter: blur(12px); z-index: 100; }
     .logo { display: flex; align-items: center; gap: .6rem; font-size: 1.15rem; font-weight: 700; color: #0A1128; text-decoration: none; letter-spacing: -0.02em; }
-    .nav-links a { color: #6B7280; text-decoration: none; font-size: .9rem; font-weight: 500; margin-left: 1.4rem; transition: color .2s; }
-    .nav-links a:hover { color: #0A1128; }
+    .nav-links { display: flex; align-items: center; gap: 1.1rem; }
+    .nav-links a.utility { color: #9CA3AF; text-decoration: none; font-size: .85rem; font-weight: 500; transition: color .2s; }
+    .nav-links a.utility:hover { color: #0A1128; }
+    .nav-links a.lrn { color: #8A6D1D; background: #fff; border: 1.5px solid #E0CB8C; border-radius: 999px; padding: .42rem 1.1rem; text-decoration: none; font-size: .88rem; font-weight: 600; transition: all .2s; }
+    .nav-links a.lrn:hover { background: #FDF9EC; border-color: #D4AF37; }
 
     /* HERO MINI */
     .hero-band { position: relative; width: 100vw; left: 50%; margin-left: -50vw; background: linear-gradient(135deg, #0A1128 0%, #152245 100%); padding: 1.8rem 2.5rem; overflow: hidden; margin-top: -0.25rem; }
@@ -126,10 +129,9 @@
       Statistics Tool
     </a>
     <div class="nav-links">
-      <a href="/">Home</a>
-      <a href="/learn/">Learn</a>
-      <a href="/#faq">FAQ</a>
-      <a href="/privacy-policy.html">Privacy</a>
+      <a class="utility" href="/#faq">FAQ</a>
+      <a class="utility" href="/privacy-policy.html">Privacy</a>
+      <a class="lrn" href="/learn/">Learn</a>
     </div>
   </nav>
 
