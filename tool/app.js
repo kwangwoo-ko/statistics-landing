@@ -5,7 +5,7 @@
   var PALETTE = ["#4F6BED", "#D4AF37", "#0A1128", "#6889B0", "#C05746", "#3D8B7D", "#8B6BB1", "#B0A15A"];
   var POINT_COLOR = "#C05746";
 
-  var SAMPLE_CSV = "Control,Treatment_A,Treatment_B,Placebo\n23.5,28.4,31.2,22.1\n25.1,30.1,33.5,21.8\n22.8,27.9,30.8,23.4\n24.3,29.5,32.1,22.9\n26.2,31.2,34.5,21.5\n23.9,28.8,31.9,22.7\n25.5,30.3,33.2,21.9\n24.1,29.1,32.4,23.1\n22.7,27.5,30.5,22.5\n25.8,31.0,34.1,21.7\n23.3,28.2,31.5,22.8\n24.6,29.7,32.8,22.3\n26.0,30.9,33.8,21.4\n23.7,28.6,31.7,22.6\n25.2,30.2,33.1,22.0";
+  var SAMPLE_CSV = "Control,Treatment_A,Treatment_B\n22.81,23.85,25.17\n23.56,27.49,22.79\n25.55,28.35,26.02\n24.23,27.85,24.11\n25.10,27.41,23.49\n24.69,26.32,23.53\n23.24,28.04,24.23\n24.65,27.79,23.83\n23.62,26.97,27.05\n23.61,26.51,23.44\n24.12,26.07,24.34\n22.17,25.02,24.33\n25.43,27.97,24.33\n23.19,23.89,24.37\n25.20,26.06,23.72\n24.16,26.70,23.60\n25.84,27.53,23.27\n23.21,28.61,22.51\n23.63,27.69,24.56\n24.41,26.15,25.48";
 
   var S = GraphZenStats;
   var state = { fileName: null, columns: [], numericCols: [] };
@@ -43,7 +43,7 @@
       cb.type = 'checkbox';
       cb.value = col.name;
       cb.id = 'col_' + col.name;
-      cb.checked = false;
+      cb.checked = true;
       cb.addEventListener('change', updateGenerateState);
       var span = document.createElement('span');
       span.textContent = col.name + '  (' + col.values.length + ' values)';
